@@ -34,42 +34,48 @@ const SERVICES = [
 
 const NEWS = [
   {
-    img: "/news/dot-inspection.jpg",
+    gradient: "linear-gradient(135deg, #1B3A6B 0%, #294E89 100%)",
+    icon: "🔍",
     date: "2026-05",
     href: "https://www.cvsa.org/news-entries/international-roadcheck/",
     zh: { tag: "安全检查", title: "CVSA Roadcheck 5/13–15：刹车 & HOS 重点执法", excerpt: "全美执法人员将在 72 小时内集中检查商用车，本年度重点针对刹车系统缺陷与 HOS 违规，建议司机提前自查，避免被要求停驶。" },
     en: { tag: "Safety", title: "CVSA Roadcheck May 13–15: Brakes & HOS Focus", excerpt: "Officers across North America will conduct 72-hour blitz inspections targeting brake system defects and HOS violations. Pre-trip inspections are strongly recommended." },
   },
   {
-    img: "/news/carb-electric.jpg",
+    gradient: "linear-gradient(135deg, #166534 0%, #15803d 100%)",
+    icon: "⚡",
     date: "2026-05",
     href: "https://ww2.arb.ca.gov/our-work/programs/advanced-clean-trucks",
-    zh: { tag: "加州法规", title: "Advanced Clean Trucks：制造商强制零排放配额 2026 年起执行", excerpt: "CARB ACT 规则正式生效，卡车制造商须按配额销售零排放车型。Owner-Operator 购车前建议核实补贴资格与合规状态，避免未来运营限制。" },
-    en: { tag: "California", title: "Advanced Clean Trucks: Manufacturer ZEV Quotas Effective 2026", excerpt: "CARB's ACT rule takes effect, requiring manufacturers to sell zero-emission vehicles per quota. Owner-Operators should verify incentive eligibility before purchasing new equipment." },
+    zh: { tag: "加州法规", title: "Advanced Clean Trucks：强制零排放配额 2026 年起执行", excerpt: "CARB ACT 规则正式生效，卡车制造商须按配额销售零排放车型。Owner-Operator 购车前建议核实补贴资格与合规状态，避免未来运营限制。" },
+    en: { tag: "California", title: "Advanced Clean Trucks: ZEV Quotas Effective 2026", excerpt: "CARB's ACT rule takes effect requiring manufacturers to sell zero-emission vehicles per quota. Owner-Operators should verify incentive eligibility before purchasing new equipment." },
   },
   {
-    img: "/news/cdl-driver.jpg",
+    gradient: "linear-gradient(135deg, #92400e 0%, #b45309 100%)",
+    icon: "📋",
     date: "2026-04",
-    href: "https://www.fmcsa.dot.gov/registration/commercial-drivers-license/cdl-testing-requirements",
+    href: "https://www.fmcsa.dot.gov/registration/commercial-drivers-license",
     zh: { tag: "CDL 法规", title: "FMCSA 要求各州核实境外 CDL：华人司机须备好记录", excerpt: "FMCSA 新指引要求各州 DMV 对在美以外取得 CDL 的司机进行额外身份与驾照验证，建议相关司机提前整理驾照原件及翻译文件。" },
     en: { tag: "CDL", title: "FMCSA Directs States to Verify Foreign-Issued CDLs", excerpt: "New FMCSA guidance directs state DMVs to conduct additional identity and license verification for drivers with foreign CDLs. Prepare original licenses and certified translations." },
   },
   {
-    img: "/news/dot-inspection.jpg",
+    gradient: "linear-gradient(135deg, #4c1d95 0%, #6d28d9 100%)",
+    icon: "⏱",
     date: "2026-04",
     href: "https://www.fmcsa.dot.gov/hours-service/summary-hours-service-regulations",
     zh: { tag: "HOS 规则", title: "短途豁免半径扩至 150 英里：ELD 要求或可免除", excerpt: "FMCSA 正式更新 Short-Haul Exemption，运营半径从 100 空气英里扩大至 150 英里。符合条件的当日返回司机可免 ELD 记录义务。" },
-    en: { tag: "HOS Rules", title: "Short-Haul HOS Exemption Expanded to 150 Air Miles", excerpt: "FMCSA expanded the Short-Haul Exemption radius to 150 air miles. Qualifying drivers who return to their home terminal daily may be exempt from ELD requirements." },
+    en: { tag: "HOS Rules", title: "Short-Haul Exemption Expanded to 150 Air Miles", excerpt: "FMCSA expanded the Short-Haul Exemption radius to 150 air miles. Qualifying drivers who return to their home terminal daily may be exempt from ELD requirements." },
   },
   {
-    img: "/news/carb-electric.jpg",
+    gradient: "linear-gradient(135deg, #0f766e 0%, #0d9488 100%)",
+    icon: "🌿",
     date: "2026-03",
     href: "https://ww2.arb.ca.gov/our-work/programs/clean-truck-check",
-    zh: { tag: "CTC 检测", title: "加州 Clean Truck Check 扩展至所有 26,001 lb+ 柴油卡车", excerpt: "CTC 路边排放测试项目 2026 年起覆盖所有总重超过 26,001 磅的柴油卡车，未通过检测将被责令停驶整改，加州运营司机须尽早了解合规流程。" },
-    en: { tag: "CTC", title: "California Clean Truck Check Expanded to All Diesel Trucks 26,001+ lbs", excerpt: "California's roadside emissions testing expands to all diesel trucks over 26,001 lbs GVWR. Vehicles failing inspection may be ordered out of service." },
+    zh: { tag: "CTC 检测", title: "Clean Truck Check 扩展至所有 26,001 lb+ 柴油卡车", excerpt: "CTC 路边排放测试项目 2026 年起覆盖所有总重超过 26,001 磅的柴油卡车，未通过检测将被责令停驶整改，加州运营司机须尽早了解合规流程。" },
+    en: { tag: "CTC", title: "Clean Truck Check Expands to All Diesel Trucks 26,001+ lbs", excerpt: "California's roadside emissions testing expands to all diesel trucks over 26,001 lbs GVWR. Vehicles failing inspection may be ordered out of service for repairs." },
   },
   {
-    img: "/news/cdl-driver.jpg",
+    gradient: "linear-gradient(135deg, #881337 0%, #be123c 100%)",
+    icon: "🛡",
     date: "2026-03",
     href: "https://www.fmcsa.dot.gov/registration/mc-numbers/financial-responsibility",
     zh: { tag: "保险合规", title: "货运经纪人最低保证金上调至 $100,000", excerpt: "FMCSA 将 Property Broker 最低财务责任保证金从 $75,000 提高至 $100,000，2026 年起执行。未达标的经纪人须在续期前补足，否则面临执照吊销。" },
@@ -422,21 +428,17 @@ export default function HomePage() {
                   boxShadow: "0 2px 12px rgba(15,36,71,0.06)",
                 }}
               >
-                <div className="relative h-44 overflow-hidden">
-                  <Image
-                    src={n.img}
-                    alt={t(lang, n.zh.title, n.en.title)}
-                    fill
-                    className="object-cover transition-transform duration-500 hover:scale-105"
-                  />
-                  <div className="absolute top-3 left-3">
-                    <span
-                      className="text-xs font-semibold px-3 py-1 rounded-full"
-                      style={{ backgroundColor: "#C8923D", color: "white" }}
-                    >
-                      {t(lang, n.zh.tag, n.en.tag)}
-                    </span>
-                  </div>
+                <div
+                  className="h-36 flex items-center justify-between px-6"
+                  style={{ background: n.gradient }}
+                >
+                  <span className="text-5xl">{n.icon}</span>
+                  <span
+                    className="text-xs font-semibold px-3 py-1 rounded-full"
+                    style={{ backgroundColor: "rgba(255,255,255,0.2)", color: "white" }}
+                  >
+                    {t(lang, n.zh.tag, n.en.tag)}
+                  </span>
                 </div>
                 <div className="p-5">
                   <p className="text-xs mb-2" style={{ color: "#4A5468" }}>{n.date}</p>
