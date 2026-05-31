@@ -34,48 +34,42 @@ const SERVICES = [
 
 const NEWS = [
   {
-    gradient: "linear-gradient(135deg, #1B3A6B 0%, #294E89 100%)",
-    icon: "🔍",
+    image: "/news/dot-inspection.jpg",
     date: "2026-05",
     href: "https://www.cvsa.org/news-entries/international-roadcheck/",
     zh: { tag: "安全检查", title: "CVSA Roadcheck 5/13–15：刹车 & HOS 重点执法", excerpt: "全美执法人员将在 72 小时内集中检查商用车，本年度重点针对刹车系统缺陷与 HOS 违规，建议司机提前自查，避免被要求停驶。" },
     en: { tag: "Safety", title: "CVSA Roadcheck May 13–15: Brakes & HOS Focus", excerpt: "Officers across North America will conduct 72-hour blitz inspections targeting brake system defects and HOS violations. Pre-trip inspections are strongly recommended." },
   },
   {
-    gradient: "linear-gradient(135deg, #166534 0%, #15803d 100%)",
-    icon: "⚡",
+    image: "/news/carb-electric.jpg",
     date: "2026-05",
     href: "https://ww2.arb.ca.gov/our-work/programs/advanced-clean-trucks",
     zh: { tag: "加州法规", title: "Advanced Clean Trucks：强制零排放配额 2026 年起执行", excerpt: "CARB ACT 规则正式生效，卡车制造商须按配额销售零排放车型。Owner-Operator 购车前建议核实补贴资格与合规状态，避免未来运营限制。" },
     en: { tag: "California", title: "Advanced Clean Trucks: ZEV Quotas Effective 2026", excerpt: "CARB's ACT rule takes effect requiring manufacturers to sell zero-emission vehicles per quota. Owner-Operators should verify incentive eligibility before purchasing new equipment." },
   },
   {
-    gradient: "linear-gradient(135deg, #92400e 0%, #b45309 100%)",
-    icon: "📋",
+    image: "/news/cdl-driver.jpg",
     date: "2026-04",
     href: "https://www.fmcsa.dot.gov/registration/commercial-drivers-license",
     zh: { tag: "CDL 法规", title: "FMCSA 要求各州核实境外 CDL：华人司机须备好记录", excerpt: "FMCSA 新指引要求各州 DMV 对在美以外取得 CDL 的司机进行额外身份与驾照验证，建议相关司机提前整理驾照原件及翻译文件。" },
     en: { tag: "CDL", title: "FMCSA Directs States to Verify Foreign-Issued CDLs", excerpt: "New FMCSA guidance directs state DMVs to conduct additional identity and license verification for drivers with foreign CDLs. Prepare original licenses and certified translations." },
   },
   {
-    gradient: "linear-gradient(135deg, #4c1d95 0%, #6d28d9 100%)",
-    icon: "⏱",
+    image: "/news/dot-inspection.jpg",
     date: "2026-04",
     href: "https://www.fmcsa.dot.gov/hours-service/summary-hours-service-regulations",
     zh: { tag: "HOS 规则", title: "短途豁免半径扩至 150 英里：ELD 要求或可免除", excerpt: "FMCSA 正式更新 Short-Haul Exemption，运营半径从 100 空气英里扩大至 150 英里。符合条件的当日返回司机可免 ELD 记录义务。" },
     en: { tag: "HOS Rules", title: "Short-Haul Exemption Expanded to 150 Air Miles", excerpt: "FMCSA expanded the Short-Haul Exemption radius to 150 air miles. Qualifying drivers who return to their home terminal daily may be exempt from ELD requirements." },
   },
   {
-    gradient: "linear-gradient(135deg, #0f766e 0%, #0d9488 100%)",
-    icon: "🌿",
+    image: "/news/carb-electric.jpg",
     date: "2026-03",
     href: "https://ww2.arb.ca.gov/our-work/programs/clean-truck-check",
     zh: { tag: "CTC 检测", title: "Clean Truck Check 扩展至所有 26,001 lb+ 柴油卡车", excerpt: "CTC 路边排放测试项目 2026 年起覆盖所有总重超过 26,001 磅的柴油卡车，未通过检测将被责令停驶整改，加州运营司机须尽早了解合规流程。" },
     en: { tag: "CTC", title: "Clean Truck Check Expands to All Diesel Trucks 26,001+ lbs", excerpt: "California's roadside emissions testing expands to all diesel trucks over 26,001 lbs GVWR. Vehicles failing inspection may be ordered out of service for repairs." },
   },
   {
-    gradient: "linear-gradient(135deg, #881337 0%, #be123c 100%)",
-    icon: "🛡",
+    image: "/news/cdl-driver.jpg",
     date: "2026-03",
     href: "https://www.fmcsa.dot.gov/registration/mc-numbers/financial-responsibility",
     zh: { tag: "保险合规", title: "货运经纪人最低保证金上调至 $100,000", excerpt: "FMCSA 将 Property Broker 最低财务责任保证金从 $75,000 提高至 $100,000，2026 年起执行。未达标的经纪人须在续期前补足，否则面临执照吊销。" },
@@ -108,6 +102,10 @@ export default function HomePage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLoginToast, setShowLoginToast] = useState(false);
+  const [form, setForm] = useState({ name: "", contact: "", subject: "", message: "" });
+  const [formSent, setFormSent] = useState(false);
+  const [formSubmitting, setFormSubmitting] = useState(false);
+  const [formError, setFormError] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("npodia-lang") as Lang | null;
@@ -134,6 +132,50 @@ export default function HomePage() {
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
     setMobileMenuOpen(false);
+  };
+
+  const applyForMembership = (tier: "standard" | "aid") => {
+    const subject = t(lang,
+      tier === "standard" ? "标准会员申请（$12/年）" : "援助会员申请（$1/年）",
+      tier === "standard" ? "Standard Membership Application ($12/yr)" : "Subsidized Membership Application ($1/yr)"
+    );
+    const message = t(lang,
+      tier === "standard"
+        ? "您好，我希望申请 DIA 标准会员。"
+        : "您好，我目前符合援助条件，希望申请 DIA 援助会员。",
+      tier === "standard"
+        ? "Hello, I would like to apply for DIA Standard Membership."
+        : "Hello, I qualify for the subsidized rate and would like to apply for DIA Membership."
+    );
+    setForm(prev => ({ ...prev, subject, message }));
+    setFormSent(false);
+    setTimeout(() => {
+      const el = document.getElementById("contactForm");
+      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: "smooth" });
+    }, 50);
+  };
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormSubmitting(true);
+    setFormError(false);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(form),
+      });
+      if (res.ok) {
+        setFormSent(true);
+        setForm({ name: "", contact: "", subject: "", message: "" });
+      } else {
+        setFormError(true);
+      }
+    } catch {
+      setFormError(true);
+    } finally {
+      setFormSubmitting(false);
+    }
   };
 
   return (
@@ -428,14 +470,18 @@ export default function HomePage() {
                   boxShadow: "0 2px 12px rgba(15,36,71,0.06)",
                 }}
               >
-                <div
-                  className="h-36 flex items-center justify-between px-6"
-                  style={{ background: n.gradient }}
-                >
-                  <span className="text-5xl">{n.icon}</span>
+                <div className="h-36 relative overflow-hidden">
+                  <Image
+                    src={n.image}
+                    alt={t(lang, n.zh.tag, n.en.tag)}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  />
+                  <div className="absolute inset-0" style={{ background: "rgba(15,36,71,0.45)" }} />
                   <span
-                    className="text-xs font-semibold px-3 py-1 rounded-full"
-                    style={{ backgroundColor: "rgba(255,255,255,0.2)", color: "white" }}
+                    className="absolute top-3 right-3 text-xs font-semibold px-3 py-1 rounded-full"
+                    style={{ backgroundColor: "#C8923D", color: "white" }}
                   >
                     {t(lang, n.zh.tag, n.en.tag)}
                   </span>
@@ -516,7 +562,7 @@ export default function HomePage() {
                 ))}
               </ul>
               <button
-                onClick={() => scrollTo("contact")}
+                onClick={() => applyForMembership("standard")}
                 className="w-full py-3.5 rounded-full font-semibold text-white transition-all hover:scale-105"
                 style={{ backgroundColor: "#C8923D" }}
               >
@@ -556,7 +602,7 @@ export default function HomePage() {
                 ))}
               </ul>
               <button
-                onClick={() => scrollTo("contact")}
+                onClick={() => applyForMembership("aid")}
                 className="w-full py-3.5 rounded-full font-semibold transition-all hover:bg-navy-100"
                 style={{ border: "2px solid #0F2447", color: "#0F2447" }}
               >
@@ -624,32 +670,6 @@ export default function HomePage() {
             ))}
           </div>
 
-          <div className="border-t border-white/10 pt-16">
-            <p className="text-xs font-semibold tracking-widest uppercase mb-8 text-center" style={{ color: "#C8923D" }}>
-              {t(lang, "创始团队", "Founding Team")}
-            </p>
-            <div className="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto">
-              {[
-                { name: "Wenhao Huang", zh: { role: "财务官 (Treasurer)", bio: "税务与财务合规专家，为 DIA 提供财税专业支持。" }, en: { role: "Treasurer", bio: "Tax and financial compliance specialist, providing professional financial oversight for DIA." } },
-                { name: "Lilu Zhao", zh: { role: "会长 (President)", bio: "货运经纪专家，在物流行业拥有深厚的社群运营经验。" }, en: { role: "President", bio: "Freight brokerage expert with deep experience in logistics community building." } },
-                { name: "Dan Mi", zh: { role: "秘书 (Secretary)", bio: "商业保险专家，负责 DIA 行政管理与商家关系维护。" }, en: { role: "Secretary", bio: "Commercial insurance specialist, managing DIA administration and business relationships." } },
-              ].map((m, i) => (
-                <div key={i} className="text-center p-6 rounded-2xl" style={{ backgroundColor: "rgba(255,255,255,0.05)" }}>
-                  <div
-                    className="w-14 h-14 rounded-full mx-auto mb-4 flex items-center justify-center text-xl font-bold text-white"
-                    style={{ backgroundColor: "#C8923D" }}
-                  >
-                    {m.name[0]}
-                  </div>
-                  <h3 className="text-white font-semibold mb-1">{m.name}</h3>
-                  <p className="text-xs mb-3" style={{ color: "#C8923D" }}>{t(lang, m.zh.role, m.en.role)}</p>
-                  <p className="text-xs leading-relaxed" style={{ color: "rgba(255,255,255,0.6)" }}>
-                    {t(lang, m.zh.bio, m.en.bio)}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
@@ -713,18 +733,15 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-8">
             {/* WeChat */}
             <div
-              className="p-8 rounded-2xl text-center"
+              className="p-8 rounded-2xl flex items-center justify-center"
               style={{ backgroundColor: "white", border: "1px solid rgba(15,36,71,0.08)" }}
             >
-              <div className="text-3xl mb-4">💬</div>
-              <h3 className="font-semibold mb-2" style={{ color: "#0F2447" }}>{t(lang, "微信", "WeChat")}</h3>
-              <p className="text-sm mb-4" style={{ color: "#4A5468" }}>ID: NPODIA</p>
               <Image
                 src="/wechat-qr.jpg"
                 alt="WeChat QR Code"
-                width={140}
-                height={140}
-                className="mx-auto rounded-xl"
+                width={160}
+                height={160}
+                className="rounded-xl"
               />
             </div>
 
@@ -767,6 +784,133 @@ export default function HomePage() {
                 {t(lang, "行业资讯、合规教育视频、经验分享，持续更新中。", "Industry news, compliance education videos, and experience sharing — updated regularly.")}
               </p>
             </div>
+          </div>
+
+          {/* Contact Form */}
+          <div id="contactForm" className="mt-16 max-w-2xl mx-auto">
+            <h3
+              className="text-center mb-8 font-semibold"
+              style={{ fontFamily: "var(--font-display)", color: "#0F2447", fontSize: "1.2rem" }}
+            >
+              {t(lang, "发送留言", "Send a Message")}
+            </h3>
+            {formSent ? (
+              <div
+                className="text-center py-10 rounded-2xl"
+                style={{ backgroundColor: "white", border: "1px solid rgba(15,36,71,0.08)" }}
+              >
+                <p className="text-3xl mb-3">✅</p>
+                <p className="font-semibold text-lg mb-2" style={{ color: "#0F2447" }}>
+                  {t(lang, "留言已发送！", "Message sent!")}
+                </p>
+                <p className="text-sm" style={{ color: "#4A5468" }}>
+                  {t(
+                    lang,
+                    "我们将在 2 个工作日内回复。如您提供了邮箱，确认邮件已发出。",
+                    "We'll reply within 2 business days. A confirmation email has been sent if you provided an email address."
+                  )}
+                </p>
+                <button
+                  onClick={() => setFormSent(false)}
+                  className="mt-5 text-sm underline"
+                  style={{ color: "#C8923D" }}
+                >
+                  {t(lang, "再次留言", "Send another message")}
+                </button>
+              </div>
+            ) : (
+              <form
+                onSubmit={handleFormSubmit}
+                className="p-8 rounded-2xl space-y-5"
+                style={{ backgroundColor: "white", border: "1px solid rgba(15,36,71,0.08)" }}
+              >
+                <div className="grid sm:grid-cols-2 gap-5">
+                  <div>
+                    <label className="block text-xs font-medium mb-1.5" style={{ color: "#0F2447" }}>
+                      {t(lang, "姓名", "Name")} *
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      value={form.name}
+                      onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
+                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
+                      style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
+                      placeholder={t(lang, "您的姓名", "Your name")}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium mb-1.5" style={{ color: "#0F2447" }}>
+                      {t(lang, "微信 / 邮件", "WeChat / Email")} *
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      value={form.contact}
+                      onChange={e => setForm(p => ({ ...p, contact: e.target.value }))}
+                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
+                      style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
+                      placeholder={t(lang, "方便联系您的方式", "How to reach you")}
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium mb-1.5" style={{ color: "#0F2447" }}>
+                    {t(lang, "事由", "Subject")} *
+                  </label>
+                  <select
+                    required
+                    value={form.subject}
+                    onChange={e => setForm(p => ({ ...p, subject: e.target.value }))}
+                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 bg-white"
+                    style={{ border: "1px solid rgba(15,36,71,0.15)", color: form.subject ? "#1A1F2E" : "#9CA3AF" }}
+                  >
+                    <option value="" disabled>{t(lang, "请选择事由", "Select a subject")}</option>
+                    <option value={t(lang, "标准会员申请（$12/年）", "Standard Membership Application ($12/yr)")}>
+                      {t(lang, "标准会员申请（$12/年）", "Standard Membership Application ($12/yr)")}
+                    </option>
+                    <option value={t(lang, "援助会员申请（$1/年）", "Subsidized Membership Application ($1/yr)")}>
+                      {t(lang, "援助会员申请（$1/年）", "Subsidized Membership Application ($1/yr)")}
+                    </option>
+                    <option value={t(lang, "合作咨询", "Partnership Inquiry")}>
+                      {t(lang, "合作咨询", "Partnership Inquiry")}
+                    </option>
+                    <option value={t(lang, "一般问题", "General Inquiry")}>
+                      {t(lang, "一般问题", "General Inquiry")}
+                    </option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium mb-1.5" style={{ color: "#0F2447" }}>
+                    {t(lang, "留言", "Message")} *
+                  </label>
+                  <textarea
+                    required
+                    rows={4}
+                    value={form.message}
+                    onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
+                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 resize-none"
+                    style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
+                    placeholder={t(lang, "请描述您的情况或问题…", "Please describe your situation or question…")}
+                  />
+                </div>
+                {formError && (
+                  <p className="text-sm text-center py-2 rounded-lg" style={{ color: "#be123c", backgroundColor: "#fff1f2" }}>
+                    {t(lang, "发送失败，请直接发邮件至 info@npodia.org", "Submission failed. Please email us at info@npodia.org")}
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  disabled={formSubmitting}
+                  className="w-full py-3.5 rounded-full font-semibold text-white transition-all hover:scale-105 disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100"
+                  style={{ backgroundColor: "#C8923D" }}
+                >
+                  {formSubmitting
+                    ? t(lang, "发送中…", "Sending…")
+                    : t(lang, "发送留言", "Send Message")}
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </section>
