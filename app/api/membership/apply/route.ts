@@ -1,6 +1,7 @@
 const RESEND_API = "https://api.resend.com/emails";
 const ADMIN_EMAIL = "info@npodia.org";
 const FROM = "Drive Forward Immigrant Alliance <info@npodia.org>";
+const LOGO = "https://www.npodia.org/logo.png";
 
 function hasCJK(s: string) {
   return /[一-鿿㐀-䶿]/.test(s);
@@ -21,6 +22,19 @@ function tierLabel(tier: string, lang: "zh" | "en") {
   return tier === "standard" ? "Standard Membership ($12/yr)" : "Subsidized Membership ($1/yr)";
 }
 
+function emailHeader(title: string) {
+  return `<table style="width:100%;border-collapse:collapse"><tr>
+  <td style="width:60px;vertical-align:middle">
+    <img src="${LOGO}" alt="DIA" width="52" height="52" style="display:block;border-radius:6px">
+  </td>
+  <td style="vertical-align:middle;padding-left:16px">
+    <p style="color:#C8923D;font-size:11px;letter-spacing:2px;margin:0 0 2px">DRIVE FORWARD IMMIGRANT ALLIANCE</p>
+    <p style="color:rgba(255,255,255,0.65);font-size:11px;margin:0 0 5px">移路前行联盟</p>
+    <p style="color:white;font-size:18px;font-weight:600;margin:0">${title}</p>
+  </td>
+</tr></table>`;
+}
+
 function adminHtml(data: {
   firstName: string; lastName: string; email: string;
   phone?: string; wechatId?: string; tier: string; message?: string; time: string;
@@ -35,8 +49,7 @@ function adminHtml(data: {
   ];
   return `<!DOCTYPE html><html><body style="font-family:sans-serif;color:#1A1F2E;max-width:600px;margin:0 auto;padding:24px">
 <div style="background:#0F2447;padding:20px 24px;border-radius:8px 8px 0 0">
-  <p style="color:#C8923D;font-size:12px;letter-spacing:2px;margin:0 0 4px">DRIVE FORWARD IMMIGRANT ALLIANCE</p>
-  <p style="color:white;font-size:18px;font-weight:600;margin:0">新会员申请</p>
+  ${emailHeader("新会员申请")}
 </div>
 <div style="background:white;border:1px solid #e5e7eb;border-top:none;padding:24px;border-radius:0 0 8px 8px">
   <table style="width:100%;border-collapse:collapse;font-size:14px">
@@ -51,8 +64,7 @@ function adminHtml(data: {
 function confirmHtmlZh(firstName: string, tier: string, time: string) {
   return `<!DOCTYPE html><html><body style="font-family:sans-serif;color:#1A1F2E;max-width:600px;margin:0 auto;padding:24px">
 <div style="background:#0F2447;padding:20px 24px;border-radius:8px 8px 0 0">
-  <p style="color:#C8923D;font-size:12px;letter-spacing:2px;margin:0 0 4px">DRIVE FORWARD IMMIGRANT ALLIANCE</p>
-  <p style="color:white;font-size:18px;font-weight:600;margin:0">已收到您的会员申请</p>
+  ${emailHeader("已收到您的会员申请")}
 </div>
 <div style="background:white;border:1px solid #e5e7eb;border-top:none;padding:24px;border-radius:0 0 8px 8px">
   <p style="font-size:15px;line-height:1.7">${firstName} 您好，</p>
@@ -74,8 +86,7 @@ function confirmHtmlZh(firstName: string, tier: string, time: string) {
 function confirmHtmlEn(firstName: string, tier: string, time: string) {
   return `<!DOCTYPE html><html><body style="font-family:sans-serif;color:#1A1F2E;max-width:600px;margin:0 auto;padding:24px">
 <div style="background:#0F2447;padding:20px 24px;border-radius:8px 8px 0 0">
-  <p style="color:#C8923D;font-size:12px;letter-spacing:2px;margin:0 0 4px">DRIVE FORWARD IMMIGRANT ALLIANCE</p>
-  <p style="color:white;font-size:18px;font-weight:600;margin:0">We've received your membership application</p>
+  ${emailHeader("We&#39;ve received your membership application")}
 </div>
 <div style="background:white;border:1px solid #e5e7eb;border-top:none;padding:24px;border-radius:0 0 8px 8px">
   <p style="font-size:15px;line-height:1.7">Hi ${firstName},</p>
@@ -86,7 +97,7 @@ function confirmHtmlEn(firstName: string, tier: string, time: string) {
   <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0">
   <p style="margin:0;font-size:14px;line-height:1.6">
     <strong>DIA Team</strong><br>
-    Drive Forward Immigrant Alliance<br>
+    Drive Forward Immigrant Alliance · 移路前行联盟<br>
     <a href="mailto:info@npodia.org" style="color:#C8923D;text-decoration:none">info@npodia.org</a>
   </p>
   <p style="color:#9ca3af;font-size:12px;margin:16px 0 0">Submitted · ${time}</p>
@@ -108,10 +119,10 @@ async function sendEmail(apiKey: string, payload: {
 export async function POST(request: Request) {
   const body = await request.json() as {
     firstName: string; lastName: string; email: string;
-    phone?: string; wechatId?: string; tier: string; message?: string;
+    phone?: string; wechatId?: string; tier: string; message?: string; lang?: string;
   };
 
-  const { firstName, lastName, email, tier } = body;
+  const { firstName, lastName, email, tier, lang } = body;
   if (!firstName?.trim() || !lastName?.trim() || !email?.trim() || !["standard", "aid"].includes(tier)) {
     return Response.json({ error: "Missing required fields" }, { status: 400 });
   }
@@ -127,7 +138,6 @@ export async function POST(request: Request) {
   const time = formatPT();
 
   try {
-    // Insert into Supabase
     const dbRes = await fetch(`${supabaseUrl}/rest/v1/membership_applications`, {
       method: "POST",
       headers: {
@@ -151,7 +161,6 @@ export async function POST(request: Request) {
       throw new Error(`Supabase ${dbRes.status}: ${err}`);
     }
 
-    // Admin notification
     await sendEmail(resendKey, {
       from: FROM,
       to: [ADMIN_EMAIL],
@@ -159,8 +168,7 @@ export async function POST(request: Request) {
       html: adminHtml({ ...body, firstName: firstName.trim(), lastName: lastName.trim(), time }),
     });
 
-    // Applicant confirmation
-    const isZh = hasCJK(firstName) || hasCJK(lastName) || hasCJK(body.message ?? "");
+    const isZh = lang === "zh" || (!lang && (hasCJK(firstName) || hasCJK(lastName) || hasCJK(body.message ?? "")));
     await sendEmail(resendKey, {
       from: FROM,
       to: [email.trim().toLowerCase()],

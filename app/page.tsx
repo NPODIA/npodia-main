@@ -156,7 +156,7 @@ export default function HomePage() {
       const res = await fetch("/api/membership/apply", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ...membershipForm, tier: membershipModal }),
+        body: JSON.stringify({ ...membershipForm, tier: membershipModal, lang }),
       });
       if (res.ok) setMembershipSent(true);
       else setMembershipError(true);
@@ -175,7 +175,7 @@ export default function HomePage() {
       const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ ...form, lang }),
       });
       if (res.ok) {
         setFormSent(true);
