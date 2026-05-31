@@ -355,7 +355,7 @@ export default function HomePage() {
           </p>
           <h2
             className="text-center mb-4"
-            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", color: "#0F2447" }}
+            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.5rem, 2.2vw, 2rem)", color: "#0F2447" }}
           >
             {t(lang, "为您的职业发展保驾护航", "Supporting Your Professional Journey")}
           </h2>
@@ -410,7 +410,7 @@ export default function HomePage() {
           </p>
           <h2
             className="text-center mb-16"
-            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", color: "#0F2447" }}
+            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.5rem, 2.2vw, 2rem)", color: "#0F2447" }}
           >
             {t(lang, "掌握行业动态，提前做好准备", "Stay Informed, Stay Ahead")}
           </h2>
@@ -469,7 +469,7 @@ export default function HomePage() {
           </p>
           <h2
             className="text-center mb-4"
-            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", color: "#0F2447" }}
+            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.5rem, 2.2vw, 2rem)", color: "#0F2447" }}
           >
             {t(lang, "成为 DIA 会员", "Become a DIA Member")}
           </h2>
@@ -579,7 +579,7 @@ export default function HomePage() {
           </p>
           <h2
             className="text-white text-center mb-6"
-            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)" }}
+            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.5rem, 2.2vw, 2rem)" }}
           >
             {t(lang, "为什么需要 DIA？", "Why DIA?")}
           </h2>
@@ -659,7 +659,7 @@ export default function HomePage() {
           <p className="text-xs font-semibold tracking-widest uppercase mb-3 text-center" style={{ color: "#C8923D" }}>FAQ</p>
           <h2
             className="text-center mb-12"
-            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", color: "#0F2447" }}
+            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.5rem, 2.2vw, 2rem)", color: "#0F2447" }}
           >
             {t(lang, "常见问题", "Frequently Asked Questions")}
           </h2>
@@ -703,7 +703,7 @@ export default function HomePage() {
           </p>
           <h2
             className="text-center mb-4"
-            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", color: "#0F2447" }}
+            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.5rem, 2.2vw, 2rem)", color: "#0F2447" }}
           >
             {t(lang, "随时与我们联系", "We'd Love to Hear From You")}
           </h2>
