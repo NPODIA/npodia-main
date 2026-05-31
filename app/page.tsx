@@ -239,11 +239,7 @@ export default function HomePage() {
                 fontWeight: 400,
               }}
             >
-              {t(
-                lang,
-                <>移路前行，<br />共创未来</>,
-                <>Drive Forward,<br />Together</>
-              )}
+              {lang === "zh" ? <>移路前行，<br />共创未来</> : <>Drive Forward,<br />Together</>}
             </h1>
             <p
               className="text-lg mb-10 leading-relaxed max-w-2xl"
