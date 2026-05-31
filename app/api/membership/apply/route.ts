@@ -1,5 +1,3 @@
-export const runtime = "edge";
-
 const RESEND_API = "https://api.resend.com/emails";
 const ADMIN_EMAIL = "info@npodia.org";
 const FROM = "Drive Forward Immigrant Alliance <info@npodia.org>";
