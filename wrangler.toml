@@ -1,4 +1,5 @@
 name = "npodia-main"
+account_id = "7336b3a0d13b37b6b9b2e4ec8d86e977"
 main = ".open-next/worker.js"
 compatibility_date = "2026-05-30"
 compatibility_flags = ["nodejs_compat"]
