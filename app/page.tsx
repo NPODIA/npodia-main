@@ -34,40 +34,46 @@ const SERVICES = [
 
 const NEWS = [
   {
-    img: "/news/cdl-driver.jpg",
+    img: "/news/dot-inspection.jpg",
     date: "2026-05",
-    zh: { tag: "法规动态", title: "FMCSA 将限制非本地 CDL 持牌驾驶员", excerpt: "联邦机动车运营安全管理局提案将严格审查在美国以外取得商业驾照的司机，预计年底生效，影响数千名华人司机。" },
-    en: { tag: "Regulation", title: "FMCSA to Restrict Drivers with Foreign CDLs", excerpt: "FMCSA proposes stricter review of drivers who obtained commercial licenses outside the U.S., expected to take effect by year-end." },
-  },
-  {
-    img: "/news/dot-inspection.jpg",
-    date: "2026-06",
-    zh: { tag: "安全检查", title: "2026 DOT Blitz Week 时间已定", excerpt: "CVSA 年度路边安全检查周定于 2026 年 6 月，全美执法机构将对 HOS 违规、设备故障、危险品运输集中执法。" },
-    en: { tag: "Safety", title: "2026 DOT Roadcheck Blitz Week Scheduled", excerpt: "CVSA's annual roadside inspection blitz is set for June 2026, with enforcement targeting HOS violations, equipment defects, and hazardous materials." },
+    href: "https://www.cvsa.org/news-entries/international-roadcheck/",
+    zh: { tag: "安全检查", title: "CVSA Roadcheck 5/13–15：刹车 & HOS 重点执法", excerpt: "全美执法人员将在 72 小时内集中检查商用车，本年度重点针对刹车系统缺陷与 HOS 违规，建议司机提前自查，避免被要求停驶。" },
+    en: { tag: "Safety", title: "CVSA Roadcheck May 13–15: Brakes & HOS Focus", excerpt: "Officers across North America will conduct 72-hour blitz inspections targeting brake system defects and HOS violations. Pre-trip inspections are strongly recommended." },
   },
   {
     img: "/news/carb-electric.jpg",
-    date: "2026-04",
-    zh: { tag: "加州法规", title: "CARB 2026：加州卡车零排放新规生效", excerpt: "加州空气资源局新规要求更多中重型卡车符合零排放标准，Owner-Operator 需尽早了解合规路径，避免高额罚款。" },
-    en: { tag: "California", title: "CARB 2026: Zero-Emission Truck Rules Take Effect", excerpt: "California Air Resources Board requires more medium and heavy-duty trucks to meet zero-emission standards. Understand compliance options early." },
-  },
-  {
-    img: "/news/dot-inspection.jpg",
-    date: "2026-03",
-    zh: { tag: "保险合规", title: "MCS-90 保险要求更新：Owner-Op 必读", excerpt: "FMCSA 对 MCS-90 背书要求的最新解释影响独立车主运营商的责任险覆盖范围，建议在续保前与经纪人确认。" },
-    en: { tag: "Insurance", title: "MCS-90 Endorsement Update: Must-Read for Owner-Ops", excerpt: "FMCSA's latest interpretation of MCS-90 endorsement requirements affects liability coverage for independent operators. Confirm with your broker before renewal." },
+    date: "2026-05",
+    href: "https://ww2.arb.ca.gov/our-work/programs/advanced-clean-trucks",
+    zh: { tag: "加州法规", title: "Advanced Clean Trucks：制造商强制零排放配额 2026 年起执行", excerpt: "CARB ACT 规则正式生效，卡车制造商须按配额销售零排放车型。Owner-Operator 购车前建议核实补贴资格与合规状态，避免未来运营限制。" },
+    en: { tag: "California", title: "Advanced Clean Trucks: Manufacturer ZEV Quotas Effective 2026", excerpt: "CARB's ACT rule takes effect, requiring manufacturers to sell zero-emission vehicles per quota. Owner-Operators should verify incentive eligibility before purchasing new equipment." },
   },
   {
     img: "/news/cdl-driver.jpg",
-    date: "2026-02",
-    zh: { tag: "考照资讯", title: "加州 CDL 笔试新增中文选项", excerpt: "加州 DMV 宣布商业驾驶执照笔试正式支持中文版本，大幅降低语言门槛，有意考照的华人司机可直接预约。" },
-    en: { tag: "CDL", title: "California CDL Written Test Now Available in Chinese", excerpt: "California DMV announces the commercial driver's license written test is now officially available in Chinese, significantly lowering the language barrier." },
+    date: "2026-04",
+    href: "https://www.fmcsa.dot.gov/registration/commercial-drivers-license/cdl-testing-requirements",
+    zh: { tag: "CDL 法规", title: "FMCSA 要求各州核实境外 CDL：华人司机须备好记录", excerpt: "FMCSA 新指引要求各州 DMV 对在美以外取得 CDL 的司机进行额外身份与驾照验证，建议相关司机提前整理驾照原件及翻译文件。" },
+    en: { tag: "CDL", title: "FMCSA Directs States to Verify Foreign-Issued CDLs", excerpt: "New FMCSA guidance directs state DMVs to conduct additional identity and license verification for drivers with foreign CDLs. Prepare original licenses and certified translations." },
+  },
+  {
+    img: "/news/dot-inspection.jpg",
+    date: "2026-04",
+    href: "https://www.fmcsa.dot.gov/hours-service/summary-hours-service-regulations",
+    zh: { tag: "HOS 规则", title: "短途豁免半径扩至 150 英里：ELD 要求或可免除", excerpt: "FMCSA 正式更新 Short-Haul Exemption，运营半径从 100 空气英里扩大至 150 英里。符合条件的当日返回司机可免 ELD 记录义务。" },
+    en: { tag: "HOS Rules", title: "Short-Haul HOS Exemption Expanded to 150 Air Miles", excerpt: "FMCSA expanded the Short-Haul Exemption radius to 150 air miles. Qualifying drivers who return to their home terminal daily may be exempt from ELD requirements." },
   },
   {
     img: "/news/carb-electric.jpg",
-    date: "2026-01",
-    zh: { tag: "HOS 规则", title: "2026 HOS 豁免更新：农业运输新规", excerpt: "FMCSA 更新农业商品运输的 HOS 豁免条款，扩大豁免范围并明确适用距离限制，影响从事农产品配送的华人司机。" },
-    en: { tag: "HOS Rules", title: "2026 HOS Exemption Update for Agricultural Transport", excerpt: "FMCSA updates HOS exemptions for agricultural commodity transport, expanding scope and clarifying distance limits for drivers involved in produce delivery." },
+    date: "2026-03",
+    href: "https://ww2.arb.ca.gov/our-work/programs/clean-truck-check",
+    zh: { tag: "CTC 检测", title: "加州 Clean Truck Check 扩展至所有 26,001 lb+ 柴油卡车", excerpt: "CTC 路边排放测试项目 2026 年起覆盖所有总重超过 26,001 磅的柴油卡车，未通过检测将被责令停驶整改，加州运营司机须尽早了解合规流程。" },
+    en: { tag: "CTC", title: "California Clean Truck Check Expanded to All Diesel Trucks 26,001+ lbs", excerpt: "California's roadside emissions testing expands to all diesel trucks over 26,001 lbs GVWR. Vehicles failing inspection may be ordered out of service." },
+  },
+  {
+    img: "/news/cdl-driver.jpg",
+    date: "2026-03",
+    href: "https://www.fmcsa.dot.gov/registration/mc-numbers/financial-responsibility",
+    zh: { tag: "保险合规", title: "货运经纪人最低保证金上调至 $100,000", excerpt: "FMCSA 将 Property Broker 最低财务责任保证金从 $75,000 提高至 $100,000，2026 年起执行。未达标的经纪人须在续期前补足，否则面临执照吊销。" },
+    en: { tag: "Insurance", title: "Freight Broker Minimum Bond Raised to $100,000", excerpt: "FMCSA raised the minimum financial responsibility bond for property brokers from $75,000 to $100,000 effective 2026. Non-compliant brokers risk license revocation at renewal." },
   },
 ];
 
@@ -172,12 +178,24 @@ export default function HomePage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <button
-              onClick={switchLang}
-              className="text-white/70 hover:text-white text-xs px-3 py-1.5 rounded-full border border-white/20 hover:border-white/40 transition-colors"
+            <div
+              className="hidden sm:flex items-center rounded-full overflow-hidden text-xs"
+              style={{ border: "1px solid rgba(255,255,255,0.25)" }}
             >
-              {lang === "zh" ? "EN" : "中文"}
-            </button>
+              {(["zh", "en"] as Lang[]).map((l) => (
+                <button
+                  key={l}
+                  onClick={() => { setLang(l); localStorage.setItem("npodia-lang", l); }}
+                  className="px-3 py-1.5 transition-all"
+                  style={{
+                    backgroundColor: lang === l ? "rgba(255,255,255,0.18)" : "transparent",
+                    color: lang === l ? "white" : "rgba(255,255,255,0.5)",
+                  }}
+                >
+                  {l === "zh" ? "中文" : "EN"}
+                </button>
+              ))}
+            </div>
             <button
               onClick={triggerLoginToast}
               className="hidden sm:block text-sm px-4 py-2 rounded-full font-medium transition-all"
@@ -392,9 +410,12 @@ export default function HomePage() {
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {NEWS.map((n, i) => (
-              <article
+              <a
                 key={i}
-                className="rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                href={n.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl block"
                 style={{
                   backgroundColor: "white",
                   border: "1px solid rgba(15,36,71,0.08)",
@@ -428,8 +449,11 @@ export default function HomePage() {
                   <p className="text-sm leading-relaxed line-clamp-3" style={{ color: "#4A5468" }}>
                     {t(lang, n.zh.excerpt, n.en.excerpt)}
                   </p>
+                  <p className="mt-3 text-xs font-medium" style={{ color: "#C8923D" }}>
+                    {t(lang, "阅读原文 →", "Read more →")}
+                  </p>
                 </div>
-              </article>
+              </a>
             ))}
           </div>
         </div>
