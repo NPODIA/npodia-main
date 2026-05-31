@@ -107,6 +107,13 @@ export default function HomePage() {
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [formError, setFormError] = useState(false);
 
+  // Membership application modal
+  const [membershipModal, setMembershipModal] = useState<"standard" | "aid" | null>(null);
+  const [membershipForm, setMembershipForm] = useState({ firstName: "", lastName: "", email: "", phone: "", wechatId: "", message: "" });
+  const [membershipSent, setMembershipSent] = useState(false);
+  const [membershipSubmitting, setMembershipSubmitting] = useState(false);
+  const [membershipError, setMembershipError] = useState(false);
+
   useEffect(() => {
     const saved = localStorage.getItem("npodia-lang") as Lang | null;
     if (saved === "zh" || saved === "en") setLang(saved);
@@ -135,24 +142,29 @@ export default function HomePage() {
   };
 
   const applyForMembership = (tier: "standard" | "aid") => {
-    const subject = t(lang,
-      tier === "standard" ? "标准会员申请（$12/年）" : "援助会员申请（$1/年）",
-      tier === "standard" ? "Standard Membership Application ($12/yr)" : "Subsidized Membership Application ($1/yr)"
-    );
-    const message = t(lang,
-      tier === "standard"
-        ? "您好，我希望申请 DIA 标准会员。"
-        : "您好，我目前符合援助条件，希望申请 DIA 援助会员。",
-      tier === "standard"
-        ? "Hello, I would like to apply for DIA Standard Membership."
-        : "Hello, I qualify for the subsidized rate and would like to apply for DIA Membership."
-    );
-    setForm(prev => ({ ...prev, subject, message }));
-    setFormSent(false);
-    setTimeout(() => {
-      const el = document.getElementById("contactForm");
-      if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 80, behavior: "smooth" });
-    }, 50);
+    setMembershipModal(tier);
+    setMembershipSent(false);
+    setMembershipError(false);
+    setMembershipForm({ firstName: "", lastName: "", email: "", phone: "", wechatId: "", message: "" });
+  };
+
+  const handleMembershipSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setMembershipSubmitting(true);
+    setMembershipError(false);
+    try {
+      const res = await fetch("/api/membership/apply", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ ...membershipForm, tier: membershipModal }),
+      });
+      if (res.ok) setMembershipSent(true);
+      else setMembershipError(true);
+    } catch {
+      setMembershipError(true);
+    } finally {
+      setMembershipSubmitting(false);
+    }
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -743,7 +755,7 @@ export default function HomePage() {
                 src="/wechat-qr.jpg"
                 alt="WeChat QR Code"
                 width={160}
-                height={130}
+                height={160}
                 className="mx-auto rounded-xl"
               />
             </div>
@@ -917,6 +929,205 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* ── Membership Application Modal ─────────────────────────────── */}
+      {membershipModal && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+          style={{ backgroundColor: "rgba(10,24,48,0.75)", backdropFilter: "blur(4px)" }}
+          onClick={(e) => { if (e.target === e.currentTarget) setMembershipModal(null); }}
+        >
+          <div
+            className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl"
+            style={{ backgroundColor: "white", maxHeight: "90vh", overflowY: "auto" }}
+          >
+            {/* Modal header */}
+            <div className="px-8 py-6 flex items-center justify-between" style={{ backgroundColor: "#0F2447" }}>
+              <div>
+                <p className="text-xs font-semibold tracking-widest uppercase mb-1" style={{ color: "#C8923D" }}>
+                  {t(lang, "会员申请", "Membership Application")}
+                </p>
+                <p className="text-white font-semibold text-lg">
+                  {membershipModal === "standard"
+                    ? t(lang, "标准会员 · $12/年", "Standard · $12/yr")
+                    : t(lang, "援助会员 · $1/年", "Subsidized · $1/yr")}
+                </p>
+              </div>
+              <button
+                onClick={() => setMembershipModal(null)}
+                className="text-white/60 hover:text-white text-2xl font-light leading-none"
+              >
+                ×
+              </button>
+            </div>
+
+            {membershipSent ? (
+              <div className="px-8 py-12 text-center">
+                <p className="text-4xl mb-4">✅</p>
+                <p className="font-semibold text-xl mb-2" style={{ color: "#0F2447" }}>
+                  {t(lang, "申请已提交！", "Application submitted!")}
+                </p>
+                <p className="text-sm leading-relaxed mb-6" style={{ color: "#4A5468" }}>
+                  {t(
+                    lang,
+                    "我们已收到您的会员申请，管理员将在 3–5 个工作日内通过邮件联系您，说明付款方式（Zelle）及账号激活步骤。",
+                    "We've received your application. Our team will email you within 3–5 business days with payment instructions (Zelle) and account activation steps."
+                  )}
+                </p>
+                <button
+                  onClick={() => setMembershipModal(null)}
+                  className="px-6 py-2.5 rounded-full text-sm font-medium text-white"
+                  style={{ backgroundColor: "#C8923D" }}
+                >
+                  {t(lang, "关闭", "Close")}
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleMembershipSubmit} className="px-8 py-6 space-y-4">
+                {membershipModal === "aid" && (
+                  <div
+                    className="text-sm leading-relaxed p-4 rounded-xl"
+                    style={{ backgroundColor: "#FEF3C7", color: "#92400e" }}
+                  >
+                    {t(
+                      lang,
+                      "援助会员适用于目前失业或年收入低于联邦贫困线 120% 的从业者。请在留言中简要说明您的情况。",
+                      "Subsidized membership is for those currently unemployed or earning below 120% of the federal poverty line. Please briefly explain your situation in the message field."
+                    )}
+                  </div>
+                )}
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-medium mb-1.5" style={{ color: "#0F2447" }}>
+                      {t(lang, "名", "First Name")} *
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      value={membershipForm.firstName}
+                      onChange={e => setMembershipForm(p => ({ ...p, firstName: e.target.value }))}
+                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
+                      style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
+                      placeholder={t(lang, "名字", "First name")}
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium mb-1.5" style={{ color: "#0F2447" }}>
+                      {t(lang, "姓", "Last Name")} *
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      value={membershipForm.lastName}
+                      onChange={e => setMembershipForm(p => ({ ...p, lastName: e.target.value }))}
+                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
+                      style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
+                      placeholder={t(lang, "姓氏", "Last name")}
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium mb-1.5" style={{ color: "#0F2447" }}>
+                    {t(lang, "邮箱", "Email")} *
+                  </label>
+                  <input
+                    required
+                    type="email"
+                    value={membershipForm.email}
+                    onChange={e => setMembershipForm(p => ({ ...p, email: e.target.value }))}
+                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
+                    style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
+                    placeholder="your@email.com"
+                  />
+                  <p className="text-xs mt-1" style={{ color: "#9ca3af" }}>
+                    {t(lang, "账号激活邮件将发至此邮箱", "Account activation will be sent to this email")}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-medium mb-1.5" style={{ color: "#0F2447" }}>
+                      {t(lang, "微信号", "WeChat ID")}
+                    </label>
+                    <input
+                      type="text"
+                      value={membershipForm.wechatId}
+                      onChange={e => setMembershipForm(p => ({ ...p, wechatId: e.target.value }))}
+                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
+                      style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
+                      placeholder="NPODIA"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium mb-1.5" style={{ color: "#0F2447" }}>
+                      {t(lang, "电话", "Phone")}
+                    </label>
+                    <input
+                      type="tel"
+                      value={membershipForm.phone}
+                      onChange={e => setMembershipForm(p => ({ ...p, phone: e.target.value }))}
+                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
+                      style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
+                      placeholder="(626) 000-0000"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium mb-1.5" style={{ color: "#0F2447" }}>
+                    {t(lang,
+                      membershipModal === "aid" ? "申请说明 *" : "留言（可选）",
+                      membershipModal === "aid" ? "Explanation *" : "Message (optional)"
+                    )}
+                  </label>
+                  <textarea
+                    required={membershipModal === "aid"}
+                    rows={3}
+                    value={membershipForm.message}
+                    onChange={e => setMembershipForm(p => ({ ...p, message: e.target.value }))}
+                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 resize-none"
+                    style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
+                    placeholder={t(
+                      lang,
+                      membershipModal === "aid" ? "请简述您目前的就业或收入情况…" : "有什么想告诉我们的？",
+                      membershipModal === "aid" ? "Please briefly describe your current employment or income situation…" : "Anything you'd like to share?"
+                    )}
+                  />
+                </div>
+
+                {membershipError && (
+                  <p className="text-sm text-center py-2 rounded-lg" style={{ color: "#be123c", backgroundColor: "#fff1f2" }}>
+                    {t(lang, "提交失败，请直接发邮件至 info@npodia.org", "Submission failed. Please email info@npodia.org")}
+                  </p>
+                )}
+
+                <div className="flex gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setMembershipModal(null)}
+                    className="flex-1 py-3 rounded-full text-sm font-medium transition-all"
+                    style={{ border: "1px solid rgba(15,36,71,0.2)", color: "#4A5468" }}
+                  >
+                    {t(lang, "取消", "Cancel")}
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={membershipSubmitting}
+                    className="flex-1 py-3 rounded-full text-sm font-semibold text-white transition-all hover:scale-105 disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100"
+                    style={{ backgroundColor: "#C8923D" }}
+                  >
+                    {membershipSubmitting
+                      ? t(lang, "提交中…", "Submitting…")
+                      : t(lang, "提交申请", "Submit Application")}
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* ── Footer ───────────────────────────────────────────────────── */}
       <footer className="py-12 px-6" style={{ backgroundColor: "#0A1830" }}>

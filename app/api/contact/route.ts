@@ -1,15 +1,8 @@
-import { Resend } from "resend";
-
 export const runtime = "edge";
-
-let _resend: Resend | null = null;
-function getResend() {
-  if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY);
-  return _resend;
-}
 
 const ADMIN_EMAIL = "info@npodia.org";
 const FROM = "Drive Forward Immigrant Alliance <info@npodia.org>";
+const RESEND_API = "https://api.resend.com/emails";
 
 function isEmail(s: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(s.trim());
@@ -100,6 +93,23 @@ function hasCJK(s: string) {
   return /[一-鿿㐀-䶿]/.test(s);
 }
 
+async function sendEmail(apiKey: string, payload: {
+  from: string; to: string[]; subject: string; html: string;
+}) {
+  const res = await fetch(RESEND_API, {
+    method: "POST",
+    headers: {
+      "Authorization": `Bearer ${apiKey}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Resend ${res.status}: ${body}`);
+  }
+}
+
 export async function POST(request: Request) {
   const { name, contact, subject, message } = await request.json() as {
     name: string; contact: string; subject: string; message: string;
@@ -109,23 +119,25 @@ export async function POST(request: Request) {
     return Response.json({ error: "Missing fields" }, { status: 400 });
   }
 
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.error("[contact] RESEND_API_KEY not set");
+    return Response.json({ error: "Server misconfigured" }, { status: 500 });
+  }
+
   const time = formatPT();
 
-  const resend = getResend();
-
   try {
-    // Admin notification
-    await resend.emails.send({
+    await sendEmail(apiKey, {
       from: FROM,
       to: [ADMIN_EMAIL],
       subject: `[DIA 留言] ${subject} — ${name}`,
       html: adminHtml(name, contact, subject, message, time),
     });
 
-    // User confirmation (only if contact is an email address)
     if (isEmail(contact)) {
       const isZh = hasCJK(name) || hasCJK(message);
-      await resend.emails.send({
+      await sendEmail(apiKey, {
         from: FROM,
         to: [contact.trim()],
         subject: isZh
@@ -139,7 +151,7 @@ export async function POST(request: Request) {
 
     return Response.json({ ok: true });
   } catch (err) {
-    console.error("[contact] resend error:", err);
+    console.error("[contact] send error:", err);
     return Response.json({ error: "Failed to send email" }, { status: 500 });
   }
 }
