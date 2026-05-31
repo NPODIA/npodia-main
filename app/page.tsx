@@ -95,6 +95,7 @@ export default function HomePage() {
   const [scrolled, setScrolled] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showLoginToast, setShowLoginToast] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem("npodia-lang") as Lang | null;
@@ -106,6 +107,11 @@ export default function HomePage() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const triggerLoginToast = () => {
+    setShowLoginToast(true);
+    setTimeout(() => setShowLoginToast(false), 3000);
+  };
 
   const switchLang = () => {
     const next: Lang = lang === "zh" ? "en" : "zh";
@@ -120,6 +126,21 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen" style={{ fontFamily: "var(--font-body)" }}>
+      {/* Login coming-soon toast */}
+      <div
+        className="fixed top-20 left-1/2 z-[100] transition-all duration-300 pointer-events-none"
+        style={{
+          transform: `translateX(-50%) translateY(${showLoginToast ? "0" : "-12px"})`,
+          opacity: showLoginToast ? 1 : 0,
+        }}
+      >
+        <div
+          className="px-5 py-3 rounded-full text-sm font-medium shadow-xl text-white whitespace-nowrap"
+          style={{ backgroundColor: "#0F2447", border: "1px solid rgba(200,146,61,0.4)" }}
+        >
+          {t(lang, "会员登录即将上线 · 敬请期待", "Member login coming soon · Stay tuned")}
+        </div>
+      </div>
 
       {/* ── Nav ─────────────────────────────────────────────────────── */}
       <nav
@@ -156,6 +177,13 @@ export default function HomePage() {
               className="text-white/70 hover:text-white text-xs px-3 py-1.5 rounded-full border border-white/20 hover:border-white/40 transition-colors"
             >
               {lang === "zh" ? "EN" : "中文"}
+            </button>
+            <button
+              onClick={triggerLoginToast}
+              className="hidden sm:block text-sm px-4 py-2 rounded-full font-medium transition-all"
+              style={{ border: "1px solid rgba(255,255,255,0.3)", color: "rgba(255,255,255,0.85)" }}
+            >
+              {t(lang, "登录", "Login")}
             </button>
             <button
               onClick={() => scrollTo("membership")}

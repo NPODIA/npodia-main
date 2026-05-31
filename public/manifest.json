@@ -1,0 +1,25 @@
+{
+  "name": "Drive Forward Immigrant Alliance",
+  "short_name": "DIA",
+  "description": "北美华人卡车从业者行业社群与资源平台",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0F2447",
+  "theme_color": "#0F2447",
+  "lang": "zh",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
