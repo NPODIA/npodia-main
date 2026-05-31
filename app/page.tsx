@@ -55,21 +55,21 @@ const NEWS = [
     en: { tag: "CDL", title: "FMCSA Directs States to Verify Foreign-Issued CDLs", excerpt: "New FMCSA guidance directs state DMVs to conduct additional identity and license verification for drivers with foreign CDLs. Prepare original licenses and certified translations." },
   },
   {
-    image: "/news/dot-inspection.jpg",
+    image: "/news/truck-highway.jpg",
     date: "2026-04",
     href: "https://www.fmcsa.dot.gov/hours-service/summary-hours-service-regulations",
     zh: { tag: "HOS 规则", title: "短途豁免半径扩至 150 英里：ELD 要求或可免除", excerpt: "FMCSA 正式更新 Short-Haul Exemption，运营半径从 100 空气英里扩大至 150 英里。符合条件的当日返回司机可免 ELD 记录义务。" },
     en: { tag: "HOS Rules", title: "Short-Haul Exemption Expanded to 150 Air Miles", excerpt: "FMCSA expanded the Short-Haul Exemption radius to 150 air miles. Qualifying drivers who return to their home terminal daily may be exempt from ELD requirements." },
   },
   {
-    image: "/news/carb-electric.jpg",
+    image: "/news/truck-white.jpg",
     date: "2026-03",
     href: "https://ww2.arb.ca.gov/our-work/programs/clean-truck-check",
     zh: { tag: "CTC 检测", title: "Clean Truck Check 扩展至所有 26,001 lb+ 柴油卡车", excerpt: "CTC 路边排放测试项目 2026 年起覆盖所有总重超过 26,001 磅的柴油卡车，未通过检测将被责令停驶整改，加州运营司机须尽早了解合规流程。" },
     en: { tag: "CTC", title: "Clean Truck Check Expands to All Diesel Trucks 26,001+ lbs", excerpt: "California's roadside emissions testing expands to all diesel trucks over 26,001 lbs GVWR. Vehicles failing inspection may be ordered out of service for repairs." },
   },
   {
-    image: "/news/cdl-driver.jpg",
+    image: "/news/truck-dark.jpg",
     date: "2026-03",
     href: "https://www.fmcsa.dot.gov/registration/mc-numbers/financial-responsibility",
     zh: { tag: "保险合规", title: "货运经纪人最低保证金上调至 $100,000", excerpt: "FMCSA 将 Property Broker 最低财务责任保证金从 $75,000 提高至 $100,000，2026 年起执行。未达标的经纪人须在续期前补足，否则面临执照吊销。" },
@@ -733,15 +733,18 @@ export default function HomePage() {
           <div className="grid md:grid-cols-3 gap-8">
             {/* WeChat */}
             <div
-              className="p-8 rounded-2xl flex items-center justify-center"
+              className="p-8 rounded-2xl text-center"
               style={{ backgroundColor: "white", border: "1px solid rgba(15,36,71,0.08)" }}
             >
+              <div className="text-3xl mb-4">💬</div>
+              <h3 className="font-semibold mb-2" style={{ color: "#0F2447" }}>{t(lang, "微信", "WeChat")}</h3>
+              <p className="text-sm mb-4" style={{ color: "#4A5468" }}>ID: NPODIA</p>
               <Image
                 src="/wechat-qr.jpg"
                 alt="WeChat QR Code"
                 width={160}
-                height={160}
-                className="rounded-xl"
+                height={130}
+                className="mx-auto rounded-xl"
               />
             </div>
 
