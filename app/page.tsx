@@ -365,13 +365,18 @@ export default function HomePage() {
               >
                 {t(lang, "申请会员", "Apply for Membership")}
               </button>
-              <button
-                onClick={() => scrollTo("services")}
-                className="px-8 py-3.5 rounded-full font-semibold transition-all hover:bg-white/10"
+              <a
+                href="https://info.npodia.org"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-semibold transition-all hover:bg-white/10"
                 style={{ border: "2px solid rgba(255,255,255,0.4)", color: "white" }}
               >
-                {t(lang, "了解更多", "Learn More")}
-              </button>
+                {t(lang, "进入社区", "Community")}
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </a>
             </div>
 
             <div className="flex gap-8 mt-16 pt-8 border-t border-white/10">
@@ -621,6 +626,25 @@ export default function HomePage() {
                 {t(lang, "申请援助会员", "Apply — $1/yr")}
               </button>
             </div>
+          </div>
+
+          {/* 已是会员 → 进入社区 */}
+          <div className="mt-10 text-center">
+            <p className="text-sm mb-3" style={{ color: "#4A5468" }}>
+              {t(lang, "已是会员？", "Already a member?")}
+            </p>
+            <a
+              href="https://info.npodia.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white transition-all hover:scale-105"
+              style={{ backgroundColor: "#0F2447" }}
+            >
+              {t(lang, "进入社区平台", "Enter Community")}
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </a>
           </div>
         </div>
       </section>
