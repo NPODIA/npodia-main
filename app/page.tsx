@@ -212,7 +212,7 @@ export default function HomePage() {
       <nav
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
         style={{
-          backgroundColor: scrolled ? "rgba(15,36,71,0.97)" : "transparent",
+          backgroundColor: scrolled ? "rgba(15,36,71,0.97)" : "rgba(15,36,71,0)",
           backdropFilter: scrolled ? "blur(12px)" : "none",
           borderBottom: scrolled ? "1px solid rgba(255,255,255,0.08)" : "none",
         }}
