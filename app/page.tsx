@@ -6,12 +6,15 @@ import Image from "next/image";
 type Lang = "zh" | "en";
 const t = (lang: Lang, zh: string, en: string) => (lang === "zh" ? zh : en);
 
-const NAV_LINKS = [
+type NavLink = { id: string; zh: string; en: string; href?: string };
+const NAV_LINKS: NavLink[] = [
   { id: "services", zh: "服务", en: "Services" },
   { id: "news", zh: "资讯", en: "News" },
+  { id: "videos", zh: "视频", en: "Videos" },
   { id: "membership", zh: "会员", en: "Membership" },
   { id: "about", zh: "关于", en: "About" },
   { id: "contact", zh: "联系", en: "Contact" },
+  { id: "community", zh: "社区", en: "Community", href: "https://info.npodia.org" },
 ];
 
 const SERVICES = [
@@ -32,11 +35,21 @@ const SERVICES = [
   },
 ];
 
-const NEWS = [
+type NewsItem = {
+  image: string;
+  date: string;
+  href: string;
+  youtubeId?: string;
+  zh: { tag: string; title: string; excerpt: string };
+  en: { tag: string; title: string; excerpt: string };
+};
+
+const NEWS: NewsItem[] = [
   {
     image: "/news/dot-inspection.jpg",
     date: "2026-05",
     href: "https://www.cvsa.org/news-entries/international-roadcheck/",
+    youtubeId: "",
     zh: { tag: "安全检查", title: "CVSA Roadcheck 5/13–15：刹车 & HOS 重点执法", excerpt: "全美执法人员将在 72 小时内集中检查商用车，本年度重点针对刹车系统缺陷与 HOS 违规，建议司机提前自查，避免被要求停驶。" },
     en: { tag: "Safety", title: "CVSA Roadcheck May 13–15: Brakes & HOS Focus", excerpt: "Officers across North America will conduct 72-hour blitz inspections targeting brake system defects and HOS violations. Pre-trip inspections are strongly recommended." },
   },
@@ -96,6 +109,38 @@ const FAQS = [
   },
 ];
 
+// 视频专区数据。youtubeId 留空("")= 占位「即将上线」;录好视频后填入 11 位 YouTube ID 即上线。
+const VIDEO_CATEGORIES = [
+  {
+    id: "industry",
+    zh: "行业资讯",
+    en: "Industry News",
+    videos: [
+      { youtubeId: "", zh: { title: "经纪人保证金上调 $100k：对你意味着什么" }, en: { title: "Broker Bond Raised to $100k: What It Means" } },
+      { youtubeId: "", zh: { title: "Clean Truck Check 合规流程详解" }, en: { title: "Clean Truck Check Compliance Walkthrough" } },
+      { youtubeId: "", zh: { title: "短途豁免扩至 150 英里：谁能免 ELD" }, en: { title: "Short-Haul Exemption Now 150 Miles" } },
+    ],
+  },
+  {
+    id: "tax",
+    zh: "税务合规",
+    en: "Tax Compliance",
+    videos: [
+      { youtubeId: "", zh: { title: "Owner-Operator 报税：最容易漏的抵扣" }, en: { title: "Owner-Operator Taxes: Deductions You Miss" } },
+      { youtubeId: "", zh: { title: "1099 还是 W-2：卡车司机该怎么选" }, en: { title: "1099 vs W-2 for Truck Drivers" } },
+    ],
+  },
+  {
+    id: "compliance",
+    zh: "合规教育",
+    en: "Compliance Education",
+    videos: [
+      { youtubeId: "", zh: { title: "HOS 工时规则入门" }, en: { title: "Hours of Service Rules 101" } },
+      { youtubeId: "", zh: { title: "路政检查英语对话演练" }, en: { title: "DOT Inspection English Dialogues" } },
+    ],
+  },
+];
+
 export default function HomePage() {
   const [lang, setLang] = useState<Lang>("zh");
   const [scrolled, setScrolled] = useState(false);
@@ -113,6 +158,9 @@ export default function HomePage() {
   const [membershipSent, setMembershipSent] = useState(false);
   const [membershipSubmitting, setMembershipSubmitting] = useState(false);
   const [membershipError, setMembershipError] = useState(false);
+
+  // Video player modal（存当前播放的 YouTube ID 与标题;id 为空串时显示「即将上线」占位）
+  const [videoModal, setVideoModal] = useState<{ id: string; title: string } | null>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem("npodia-lang") as Lang | null;
@@ -226,15 +274,25 @@ export default function HomePage() {
           </button>
 
           <div className="hidden md:flex items-center gap-1">
-            {NAV_LINKS.map((l) => (
-              <button
-                key={l.id}
-                onClick={() => scrollTo(l.id)}
-                className="text-white/80 hover:text-white px-4 py-2 text-sm rounded-lg transition-colors hover:bg-white/10"
-              >
-                {t(lang, l.zh, l.en)}
-              </button>
-            ))}
+            {NAV_LINKS.map((l) =>
+              l.href ? (
+                <a
+                  key={l.id}
+                  href={l.href}
+                  className="text-white/80 hover:text-white px-4 py-2 text-sm rounded-lg transition-colors hover:bg-white/10"
+                >
+                  {t(lang, l.zh, l.en)}
+                </a>
+              ) : (
+                <button
+                  key={l.id}
+                  onClick={() => scrollTo(l.id)}
+                  className="text-white/80 hover:text-white px-4 py-2 text-sm rounded-lg transition-colors hover:bg-white/10"
+                >
+                  {t(lang, l.zh, l.en)}
+                </button>
+              )
+            )}
           </div>
 
           <div className="flex items-center gap-2">
@@ -286,15 +344,25 @@ export default function HomePage() {
 
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-white/10 py-3 px-6" style={{ backgroundColor: "rgba(15,36,71,0.98)" }}>
-            {NAV_LINKS.map((l) => (
-              <button
-                key={l.id}
-                onClick={() => scrollTo(l.id)}
-                className="block w-full text-left text-white/80 hover:text-white py-3 text-sm border-b border-white/5 last:border-0"
-              >
-                {t(lang, l.zh, l.en)}
-              </button>
-            ))}
+            {NAV_LINKS.map((l) =>
+              l.href ? (
+                <a
+                  key={l.id}
+                  href={l.href}
+                  className="block w-full text-left text-white/80 hover:text-white py-3 text-sm border-b border-white/5 last:border-0"
+                >
+                  {t(lang, l.zh, l.en)}
+                </a>
+              ) : (
+                <button
+                  key={l.id}
+                  onClick={() => scrollTo(l.id)}
+                  className="block w-full text-left text-white/80 hover:text-white py-3 text-sm border-b border-white/5 last:border-0"
+                >
+                  {t(lang, l.zh, l.en)}
+                </button>
+              )
+            )}
             <button
               onClick={() => scrollTo("membership")}
               className="mt-3 w-full text-sm px-4 py-2.5 rounded-full font-medium"
@@ -367,8 +435,6 @@ export default function HomePage() {
               </button>
               <a
                 href="https://info.npodia.org"
-                target="_blank"
-                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-semibold transition-all hover:bg-white/10"
                 style={{ border: "2px solid rgba(255,255,255,0.4)", color: "white" }}
               >
@@ -474,51 +540,149 @@ export default function HomePage() {
             {t(lang, "掌握行业动态，提前做好准备", "Stay Informed, Stay Ahead")}
           </h2>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {NEWS.map((n, i) => (
-              <a
-                key={i}
-                href={n.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl block"
-                style={{
-                  backgroundColor: "white",
-                  border: "1px solid rgba(15,36,71,0.08)",
-                  boxShadow: "0 2px 12px rgba(15,36,71,0.06)",
-                }}
-              >
-                <div className="h-36 relative overflow-hidden">
-                  <Image
-                    src={n.image}
-                    alt={t(lang, n.zh.tag, n.en.tag)}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                  />
-                  <div className="absolute inset-0" style={{ background: "rgba(15,36,71,0.45)" }} />
-                  <span
-                    className="absolute top-3 right-3 text-xs font-semibold px-3 py-1 rounded-full"
-                    style={{ backgroundColor: "#C8923D", color: "white" }}
-                  >
-                    {t(lang, n.zh.tag, n.en.tag)}
-                  </span>
-                </div>
-                <div className="p-5">
-                  <p className="text-xs mb-2" style={{ color: "#4A5468" }}>{n.date}</p>
-                  <h3
-                    className="font-semibold mb-2 leading-snug"
-                    style={{ fontFamily: "var(--font-display)", color: "#0F2447" }}
-                  >
-                    {t(lang, n.zh.title, n.en.title)}
+            {NEWS.map((n, i) => {
+              const hasVideo = n.youtubeId !== undefined;
+              const cardClass = "rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl block w-full";
+              const cardStyle = {
+                backgroundColor: "white",
+                border: "1px solid rgba(15,36,71,0.08)",
+                boxShadow: "0 2px 12px rgba(15,36,71,0.06)",
+              };
+              const inner = (
+                <>
+                  <div className="h-36 relative overflow-hidden">
+                    <Image
+                      src={n.youtubeId ? `https://img.youtube.com/vi/${n.youtubeId}/hqdefault.jpg` : n.image}
+                      alt={t(lang, n.zh.tag, n.en.tag)}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0" style={{ background: "rgba(15,36,71,0.45)" }} />
+                    {hasVideo && (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="flex items-center justify-center w-12 h-12 rounded-full" style={{ backgroundColor: "rgba(255,255,255,0.92)" }}>
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="#0F2447"><path d="M8 5v14l11-7z" /></svg>
+                        </span>
+                      </div>
+                    )}
+                    <span
+                      className="absolute top-3 right-3 text-xs font-semibold px-3 py-1 rounded-full"
+                      style={{ backgroundColor: "#C8923D", color: "white" }}
+                    >
+                      {t(lang, n.zh.tag, n.en.tag)}
+                    </span>
+                  </div>
+                  <div className="p-5">
+                    <p className="text-xs mb-2" style={{ color: "#4A5468" }}>{n.date}</p>
+                    <h3
+                      className="font-semibold mb-2 leading-snug"
+                      style={{ fontFamily: "var(--font-display)", color: "#0F2447" }}
+                    >
+                      {t(lang, n.zh.title, n.en.title)}
+                    </h3>
+                    <p className="text-sm leading-relaxed line-clamp-3" style={{ color: "#4A5468" }}>
+                      {t(lang, n.zh.excerpt, n.en.excerpt)}
+                    </p>
+                    <p className="mt-3 text-xs font-medium" style={{ color: "#C8923D" }}>
+                      {hasVideo ? t(lang, "▶ 播放视频", "▶ Play video") : t(lang, "阅读原文 →", "Read more →")}
+                    </p>
+                  </div>
+                </>
+              );
+              return hasVideo ? (
+                <button
+                  key={i}
+                  onClick={() => setVideoModal({ id: n.youtubeId!, title: t(lang, n.zh.title, n.en.title) })}
+                  className={`text-left ${cardClass}`}
+                  style={cardStyle}
+                >
+                  {inner}
+                </button>
+              ) : (
+                <a
+                  key={i}
+                  href={n.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={cardClass}
+                  style={cardStyle}
+                >
+                  {inner}
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Videos ───────────────────────────────────────────────────── */}
+      <section id="videos" className="py-24 px-6" style={{ backgroundColor: "#FAF7F2" }}>
+        <div className="max-w-6xl mx-auto">
+          <p className="text-xs font-semibold tracking-widest uppercase mb-3 text-center" style={{ color: "#C8923D" }}>
+            {t(lang, "视频中心", "Video Center")}
+          </p>
+          <h2
+            className="text-center mb-4"
+            style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.5rem, 2.2vw, 2rem)", color: "#0F2447" }}
+          >
+            {t(lang, "看视频，学得更快", "Learn Faster with Video")}
+          </h2>
+          <p className="text-center mb-16 max-w-2xl mx-auto" style={{ color: "#4A5468" }}>
+            {t(lang, "行业资讯、税务合规、合规教育，持续更新中。", "Industry news, tax compliance, and compliance education — updated regularly.")}
+          </p>
+
+          <div className="space-y-14">
+            {VIDEO_CATEGORIES.map((cat) => (
+              <div key={cat.id}>
+                <div className="flex items-center gap-3 mb-6">
+                  <span className="h-1 w-8 rounded-full" style={{ backgroundColor: "#C8923D" }} />
+                  <h3 className="font-semibold text-lg" style={{ fontFamily: "var(--font-display)", color: "#0F2447" }}>
+                    {t(lang, cat.zh, cat.en)}
                   </h3>
-                  <p className="text-sm leading-relaxed line-clamp-3" style={{ color: "#4A5468" }}>
-                    {t(lang, n.zh.excerpt, n.en.excerpt)}
-                  </p>
-                  <p className="mt-3 text-xs font-medium" style={{ color: "#C8923D" }}>
-                    {t(lang, "阅读原文 →", "Read more →")}
-                  </p>
                 </div>
-              </a>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {cat.videos.map((v, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setVideoModal({ id: v.youtubeId, title: t(lang, v.zh.title, v.en.title) })}
+                      className="text-left rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl block w-full"
+                      style={{ backgroundColor: "white", border: "1px solid rgba(15,36,71,0.08)", boxShadow: "0 2px 12px rgba(15,36,71,0.06)" }}
+                    >
+                      <div className="aspect-video relative overflow-hidden">
+                        {v.youtubeId ? (
+                          <>
+                            <Image
+                              src={`https://img.youtube.com/vi/${v.youtubeId}/hqdefault.jpg`}
+                              alt={t(lang, v.zh.title, v.en.title)}
+                              fill
+                              className="object-cover"
+                              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            />
+                            <div className="absolute inset-0" style={{ background: "rgba(15,36,71,0.25)" }} />
+                          </>
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center" style={{ background: "linear-gradient(135deg, #294E89, #0F2447)" }}>
+                            <span className="text-xs font-medium px-3 py-1 rounded-full" style={{ backgroundColor: "rgba(255,255,255,0.15)", color: "rgba(255,255,255,0.85)" }}>
+                              {t(lang, "即将上线", "Coming soon")}
+                            </span>
+                          </div>
+                        )}
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                          <span className="flex items-center justify-center w-12 h-12 rounded-full" style={{ backgroundColor: "rgba(255,255,255,0.92)" }}>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="#0F2447"><path d="M8 5v14l11-7z" /></svg>
+                          </span>
+                        </div>
+                      </div>
+                      <div className="p-4">
+                        <h4 className="font-medium text-sm leading-snug" style={{ color: "#0F2447" }}>
+                          {t(lang, v.zh.title, v.en.title)}
+                        </h4>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -635,8 +799,6 @@ export default function HomePage() {
             </p>
             <a
               href="https://info.npodia.org"
-              target="_blank"
-              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white transition-all hover:scale-105"
               style={{ backgroundColor: "#0F2447" }}
             >
@@ -1153,6 +1315,47 @@ export default function HomePage() {
         </div>
       )}
 
+      {/* ── Video Modal ──────────────────────────────────────────────── */}
+      {videoModal && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+          style={{ backgroundColor: "rgba(10,24,48,0.85)", backdropFilter: "blur(4px)" }}
+          onClick={(e) => { if (e.target === e.currentTarget) setVideoModal(null); }}
+        >
+          <div className="w-full max-w-3xl">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-white font-medium text-sm pr-4">{videoModal.title}</p>
+              <button
+                onClick={() => setVideoModal(null)}
+                className="text-white/70 hover:text-white text-3xl font-light leading-none shrink-0"
+                aria-label={t(lang, "关闭", "Close")}
+              >
+                ×
+              </button>
+            </div>
+            <div className="aspect-video w-full rounded-2xl overflow-hidden shadow-2xl" style={{ backgroundColor: "#000" }}>
+              {videoModal.id ? (
+                <iframe
+                  className="w-full h-full"
+                  src={`https://www.youtube.com/embed/${videoModal.id}?autoplay=1&rel=0`}
+                  title={videoModal.title}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center text-center px-6" style={{ background: "linear-gradient(135deg, #1B3A6B, #0F2447)" }}>
+                  <div className="text-4xl mb-3">🎬</div>
+                  <p className="text-white font-semibold mb-1">{t(lang, "视频即将上线", "Video coming soon")}</p>
+                  <p className="text-sm" style={{ color: "rgba(255,255,255,0.6)" }}>
+                    {t(lang, "我们正在制作中，敬请期待。", "We're producing this content. Stay tuned.")}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── Footer ───────────────────────────────────────────────────── */}
       <footer className="py-12 px-6" style={{ backgroundColor: "#0A1830" }}>
         <div className="max-w-6xl mx-auto">
@@ -1167,16 +1370,27 @@ export default function HomePage() {
               </div>
             </div>
             <div className="flex gap-6">
-              {NAV_LINKS.map((l) => (
-                <button
-                  key={l.id}
-                  onClick={() => scrollTo(l.id)}
-                  className="text-xs hover:text-white transition-colors"
-                  style={{ color: "rgba(255,255,255,0.5)" }}
-                >
-                  {t(lang, l.zh, l.en)}
-                </button>
-              ))}
+              {NAV_LINKS.map((l) =>
+                l.href ? (
+                  <a
+                    key={l.id}
+                    href={l.href}
+                    className="text-xs hover:text-white transition-colors"
+                    style={{ color: "rgba(255,255,255,0.5)" }}
+                  >
+                    {t(lang, l.zh, l.en)}
+                  </a>
+                ) : (
+                  <button
+                    key={l.id}
+                    onClick={() => scrollTo(l.id)}
+                    className="text-xs hover:text-white transition-colors"
+                    style={{ color: "rgba(255,255,255,0.5)" }}
+                  >
+                    {t(lang, l.zh, l.en)}
+                  </button>
+                )
+              )}
             </div>
           </div>
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8">
