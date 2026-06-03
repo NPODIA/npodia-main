@@ -23,7 +23,8 @@ html {
 
 body {
   font-family: var(--font-body);
-  background-color: #FAF7F2;
+  /* 深蓝底：让 PWA 顶部安全区 / 透明导航栏后方与 hero、info 站保持一体（各浅色板块自带背景覆盖） */
+  background-color: #0F2447;
   color: #1A1F2E;
   -webkit-font-smoothing: antialiased;
 }
