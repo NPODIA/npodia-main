@@ -1356,7 +1356,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
             <p className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>
               © 2026 Drive Forward Immigrant Alliance. {t(lang, "保留所有权利。", "All rights reserved.")}
             </p>
-            <p className="text-xs" style={{ color: "rgba(255,255,255,0.35)" }}>
+            <p className="text-xs" style={{ color: "rgba(255,255,255,0.35)", fontVariantLigatures: "none" }}>
               {t(
                 lang,
                 "IRS 501(c)(3) 认定非营利组织 · EIN 42-1921384 · 加州注册",
