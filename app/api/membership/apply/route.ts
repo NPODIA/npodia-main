@@ -18,8 +18,8 @@ function formatPT() {
 }
 
 function tierLabel(tier: string, lang: "zh" | "en") {
-  if (lang === "zh") return tier === "standard" ? "标准会员（$12/年）" : "援助会员（$1/年）";
-  return tier === "standard" ? "Standard Membership ($12/yr)" : "Subsidized Membership ($1/yr)";
+  if (lang === "zh") return tier === "standard" ? "标准会员（$12/年）" : tier === "volunteer" ? "义工会员（$3/年）" : "援助会员（$1/年）";
+  return tier === "standard" ? "Standard Membership ($12/yr)" : tier === "volunteer" ? "Volunteer Membership ($3/yr)" : "Subsidized Membership ($1/yr)";
 }
 
 function emailHeader(title: string) {
@@ -123,7 +123,7 @@ export async function POST(request: Request) {
   };
 
   const { firstName, lastName, email, tier, lang } = body;
-  if (!firstName?.trim() || !lastName?.trim() || !email?.trim() || !["standard", "aid"].includes(tier)) {
+  if (!firstName?.trim() || !lastName?.trim() || !email?.trim() || !["standard", "aid", "volunteer"].includes(tier)) {
     return Response.json({ error: "Missing required fields" }, { status: 400 });
   }
 
