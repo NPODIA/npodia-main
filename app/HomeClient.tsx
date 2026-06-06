@@ -77,7 +77,6 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
   const [scrolled, setScrolled] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showLoginToast, setShowLoginToast] = useState(false);
   const [form, setForm] = useState({ name: "", contact: "", subject: "", message: "" });
   const [formSent, setFormSent] = useState(false);
   const [formSubmitting, setFormSubmitting] = useState(false);
@@ -103,11 +102,6 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-
-  const triggerLoginToast = () => {
-    setShowLoginToast(true);
-    setTimeout(() => setShowLoginToast(false), 3000);
-  };
 
   const switchLang = () => {
     const next: Lang = lang === "zh" ? "en" : "zh";
@@ -171,22 +165,6 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
 
   return (
     <div className="min-h-screen" style={{ fontFamily: "var(--font-body)" }}>
-      {/* Login coming-soon toast */}
-      <div
-        className="fixed top-20 left-1/2 z-[100] transition-all duration-300 pointer-events-none"
-        style={{
-          transform: `translateX(-50%) translateY(${showLoginToast ? "0" : "-12px"})`,
-          opacity: showLoginToast ? 1 : 0,
-        }}
-      >
-        <div
-          className="px-5 py-3 rounded-full text-sm font-medium shadow-xl text-white whitespace-nowrap"
-          style={{ backgroundColor: "#0F2447", border: "1px solid rgba(200,146,61,0.4)" }}
-        >
-          {t(lang, "会员登录即将上线 · 敬请期待", "Member login coming soon · Stay tuned")}
-        </div>
-      </div>
-
       {/* ── Nav ─────────────────────────────────────────────────────── */}
       <nav
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
@@ -245,13 +223,13 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                 </button>
               ))}
             </div>
-            <button
-              onClick={triggerLoginToast}
+            <a
+              href="https://info.npodia.org/login"
               className="hidden sm:block text-sm px-4 py-2 rounded-full font-medium transition-all"
               style={{ border: "1px solid rgba(255,255,255,0.3)", color: "rgba(255,255,255,0.85)" }}
             >
               {t(lang, "登录", "Login")}
-            </button>
+            </a>
             <button
               onClick={() => scrollTo("membership")}
               className="hidden sm:block text-sm px-4 py-2 rounded-full font-medium transition-all"
