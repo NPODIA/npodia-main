@@ -635,9 +635,9 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                 {[
                   t(lang, "访问全部社区内容", "Full community access"),
                   t(lang, "职业英语培训课程", "Professional English courses"),
-                  t(lang, "DOT/FMCSA 合规资料库", "DOT/FMCSA compliance library"),
                   t(lang, "行业资源对接", "Industry resource referrals"),
                   t(lang, "会员专属活动邀请", "Member-only event invitations"),
+                  t(lang, "更多会员福利敬请期待", "More member benefits coming soon"),
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm" style={{ color: "#1A1F2E" }}>
                     <span className="mt-0.5 shrink-0 text-base" style={{ color: "#C8923D" }}>✓</span>
@@ -669,8 +669,8 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
               <p className="text-sm mb-6 leading-relaxed" style={{ color: "#4A5468" }}>
                 {t(
                   lang,
-                  "以服务换成长。认领并完成志愿任务，共建社区，获得专属认可与资源。",
-                  "Grow by giving back. Take on volunteer tasks to build the community and earn recognition and resources."
+                  "以服务换成长。根据自己的时间灵活参与，能做多少做多少，共建社区并获得专属认可与资源。",
+                  "Grow by giving back. Pitch in on your own schedule, as much or as little as you can, and earn recognition and resources."
                 )}
               </p>
               <ul className="space-y-3 mb-8">
@@ -678,7 +678,8 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                   t(lang, "官方服务时数证明 / 推荐信", "Official service-hour letter / reference"),
                   t(lang, "义工榜表彰 + 年度证书", "Volunteer wall + annual certificate"),
                   t(lang, "优先活动名额 + 时数兑换资源", "Priority event spots + hours-for-resources"),
-                  t(lang, "需认领并完成志愿任务", "Must take on volunteer tasks"),
+                  t(lang, "根据自己时间灵活认领工作，无时限要求", "Flexible — take on tasks on your own schedule, no time commitment"),
+                  t(lang, "更多义工福利敬请期待", "More volunteer benefits coming soon"),
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm" style={{ color: "#1A1F2E" }}>
                     <span className="mt-0.5 shrink-0 text-base" style={{ color: "#1B7A57" }}>✓</span>
@@ -1135,8 +1136,8 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                   >
                     {t(
                       lang,
-                      "义工会员需认领并完成志愿任务。请在留言中说明您能投入的方向（如内容、活动、商家对接等）。",
-                      "Volunteer members must take on and complete volunteer tasks. Please note in the message how you'd like to contribute (content, events, business outreach, etc.)."
+                      "欢迎加入义工！时间灵活、能做多少做多少。请在留言中说明您能投入的方向（如内容、活动、商家对接等）。",
+                      "Welcome aboard! Flexible schedule, contribute as much as you can. Please note in the message how you'd like to help (content, events, business outreach, etc.)."
                     )}
                   </div>
                 )}
