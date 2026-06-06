@@ -70,7 +70,11 @@ function confirmHtmlZh(firstName: string, tier: string, time: string) {
   <p style="font-size:15px;line-height:1.7">${firstName} 您好，</p>
   <p style="font-size:15px;line-height:1.7">感谢您申请成为 DIA 会员！我们已收到您的 <strong>${tierLabel(tier, "zh")}</strong> 申请，管理员将在 3-5 个工作日内审核并通过本邮件与您联系。</p>
   <div style="background:#f9fafb;border-radius:8px;padding:16px;margin:16px 0;font-size:14px;color:#4A5468">
-    <p style="margin:0">审核通过后，您将收到付款说明（Zelle）及账号激活链接。</p>
+    <p style="margin:0 0 8px"><strong>请用 Zelle 支付会员年费</strong>，收款方 <strong>NPO DIA</strong>：</p>
+    <div style="text-align:center;margin:12px 0">
+      <img src="https://www.npodia.org/zelle-qr.png" alt="DIA Zelle QR" width="200" height="200" style="display:inline-block;border:1px solid #e5e7eb;border-radius:8px">
+    </div>
+    <p style="margin:0;font-size:13px">打开银行 App 的 Zelle，扫码付款（或搜索收款方 <strong>NPO DIA</strong>）。付款后请保留截图。管理员核对到账后会发送账号激活邮件。</p>
   </div>
   <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0">
   <p style="margin:0;font-size:14px;line-height:1.6">
@@ -92,7 +96,11 @@ function confirmHtmlEn(firstName: string, tier: string, time: string) {
   <p style="font-size:15px;line-height:1.7">Hi ${firstName},</p>
   <p style="font-size:15px;line-height:1.7">Thank you for applying for DIA membership! We've received your <strong>${tierLabel(tier, "en")}</strong> application. Our team will review it within 3–5 business days and follow up via email.</p>
   <div style="background:#f9fafb;border-radius:8px;padding:16px;margin:16px 0;font-size:14px;color:#4A5468">
-    <p style="margin:0">Once approved, you'll receive payment instructions (Zelle) and an account activation link.</p>
+    <p style="margin:0 0 8px"><strong>Please pay your annual dues via Zelle</strong>, recipient <strong>NPO DIA</strong>:</p>
+    <div style="text-align:center;margin:12px 0">
+      <img src="https://www.npodia.org/zelle-qr.png" alt="DIA Zelle QR" width="200" height="200" style="display:inline-block;border:1px solid #e5e7eb;border-radius:8px">
+    </div>
+    <p style="margin:0;font-size:13px">Open Zelle in your banking app and scan the code (or search recipient <strong>NPO DIA</strong>). Keep your payment screenshot. Once we confirm receipt, we'll email your account activation link.</p>
   </div>
   <hr style="border:none;border-top:1px solid #e5e7eb;margin:20px 0">
   <p style="margin:0;font-size:14px;line-height:1.6">
