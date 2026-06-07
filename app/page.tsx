@@ -12,6 +12,7 @@ const FALLBACK_IMAGES = [
 ];
 
 type NewsRow = {
+  id: string;
   title_zh: string;
   title_en: string | null;
   content_zh: string;
@@ -71,6 +72,7 @@ export default async function Page() {
   ]);
 
   const news: NewsItem[] = newsRows.map((n, i) => ({
+    id: n.id,
     image: n.cover_image_url || FALLBACK_IMAGES[i % FALLBACK_IMAGES.length],
     date: n.published_at ? n.published_at.slice(0, 7) : "",
     href: n.source_url || "",

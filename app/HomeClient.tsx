@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 type Lang = "zh" | "en";
 const t = (lang: Lang, zh: string, en: string) => (lang === "zh" ? zh : en);
@@ -36,6 +37,7 @@ const SERVICES = [
 ];
 
 export type NewsItem = {
+  id: string;
   image: string;
   date: string;
   href: string;
@@ -485,29 +487,21 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                     <p className="text-sm leading-relaxed line-clamp-3" style={{ color: "#4A5468" }}>
                       {t(lang, n.zh.excerpt, n.en.excerpt)}
                     </p>
-                    {n.href && (
-                      <p className="mt-3 text-xs font-medium" style={{ color: "#C8923D" }}>
-                        {t(lang, "阅读原文 →", "Read more →")}
-                      </p>
-                    )}
+                    <p className="mt-3 text-xs font-medium" style={{ color: "#C8923D" }}>
+                      {t(lang, "阅读全文 →", "Read more →")}
+                    </p>
                   </div>
                 </>
               );
-              return n.href ? (
-                <a
+              return (
+                <Link
                   key={i}
-                  href={n.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={`/news/${n.id}`}
                   className={cardClass}
                   style={cardStyle}
                 >
                   {inner}
-                </a>
-              ) : (
-                <div key={i} className={cardClass} style={cardStyle}>
-                  {inner}
-                </div>
+                </Link>
               );
             })}
           </div>
@@ -1014,6 +1008,9 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                     <option value="" disabled>{t(lang, "请选择事由", "Select a subject")}</option>
                     <option value={t(lang, "标准会员申请（$12/年）", "Standard Membership Application ($12/yr)")}>
                       {t(lang, "标准会员申请（$12/年）", "Standard Membership Application ($12/yr)")}
+                    </option>
+                    <option value={t(lang, "义工会员申请（$3/年）", "Volunteer Membership Application ($3/yr)")}>
+                      {t(lang, "义工会员申请（$3/年）", "Volunteer Membership Application ($3/yr)")}
                     </option>
                     <option value={t(lang, "援助会员申请（$1/年）", "Subsidized Membership Application ($1/yr)")}>
                       {t(lang, "援助会员申请（$1/年）", "Subsidized Membership Application ($1/yr)")}
