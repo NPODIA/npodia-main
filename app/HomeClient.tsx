@@ -360,7 +360,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
               {[
                 { num: "501(c)(3)", zh: "联邦认证非营利", en: "Federally Recognized" },
                 { num: "2026", zh: "加州正式注册", en: "California Incorporated" },
-                { num: "$1/$12", zh: "年度会费", en: "Annual Membership" },
+                { num: "$1/$3/$12", zh: "年度会费", en: "Annual Membership" },
               ].map((s) => (
                 <div key={s.num}>
                   <div className="text-2xl font-bold text-white" style={{ fontFamily: "var(--font-display)" }}>
