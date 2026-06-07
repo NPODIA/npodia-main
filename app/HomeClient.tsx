@@ -505,6 +505,15 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
               );
             })}
           </div>
+          <div className="text-center mt-10">
+            <Link
+              href="/news"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all hover:scale-105"
+              style={{ backgroundColor: "#0F2447", color: "white" }}
+            >
+              {t(lang, "查看全部资讯 →", "View All News →")}
+            </Link>
+          </div>
         </div>
       </section>
 

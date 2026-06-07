@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import Link from "next/link";
 
 type Lang = "zh" | "en";
@@ -16,7 +17,15 @@ export type Article = {
   sourceUrl: string;
 };
 
-export default function NewsArticle({ article }: { article: Article }) {
+export type RelatedPost = {
+  id: string;
+  titleZh: string;
+  titleEn: string;
+  image: string;
+  date: string;
+};
+
+export default function NewsArticle({ article, related = [] }: { article: Article; related?: RelatedPost[] }) {
   const [lang, setLang] = useState<Lang>("zh");
 
   useEffect(() => {
@@ -36,11 +45,10 @@ export default function NewsArticle({ article }: { article: Article }) {
 
   return (
     <main style={{ backgroundColor: "#FAF7F2", minHeight: "100vh" }}>
-      {/* Top bar */}
       <div className="sticky top-0 z-50" style={{ backgroundColor: "#0F2447" }}>
         <div className="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
-          <Link href="/#news" className="text-sm text-white/75 hover:text-white transition-colors">
-            ← {t(lang, "返回资讯", "Back to News")}
+          <Link href="/news" className="text-sm text-white/75 hover:text-white transition-colors">
+            ← {t(lang, "全部资讯", "All News")}
           </Link>
           <button
             onClick={switchLang}
@@ -97,6 +105,54 @@ export default function NewsArticle({ article }: { article: Article }) {
               {article.sourceUrl}
             </a>
           </p>
+        )}
+
+        {related.length > 0 && (
+          <section className="mt-16 pt-10" style={{ borderTop: "1px solid rgba(15,36,71,0.1)" }}>
+            <h2 className="font-semibold mb-6" style={{ fontFamily: "var(--font-display)", color: "#0F2447", fontSize: "1.2rem" }}>
+              {t(lang, "更多资讯", "More News")}
+            </h2>
+            <div className="grid sm:grid-cols-3 gap-4">
+              {related.map((post) => (
+                <Link
+                  key={post.id}
+                  href={`/news/${post.id}`}
+                  className="rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-lg block"
+                  style={{
+                    backgroundColor: "white",
+                    border: "1px solid rgba(15,36,71,0.08)",
+                    boxShadow: "0 2px 8px rgba(15,36,71,0.05)",
+                  }}
+                >
+                  <div className="h-24 relative overflow-hidden">
+                    <Image
+                      src={post.image}
+                      alt={t(lang, post.titleZh, post.titleEn)}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 100vw, 33vw"
+                    />
+                    <div className="absolute inset-0" style={{ background: "rgba(15,36,71,0.4)" }} />
+                  </div>
+                  <div className="p-3">
+                    <p className="text-xs mb-1" style={{ color: "#4A5468" }}>{post.date}</p>
+                    <h3 className="text-sm font-medium leading-snug line-clamp-2" style={{ color: "#0F2447" }}>
+                      {t(lang, post.titleZh, post.titleEn)}
+                    </h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div className="text-center mt-6">
+              <Link
+                href="/news"
+                className="text-sm font-medium hover:underline"
+                style={{ color: "#C8923D" }}
+              >
+                {t(lang, "查看全部资讯 →", "View All News →")}
+              </Link>
+            </div>
+          </section>
         )}
 
         <div className="mt-12">

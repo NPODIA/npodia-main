@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import NewsArticle, { Article } from "./NewsArticle";
+import NewsArticle, { Article, RelatedPost } from "./NewsArticle";
 
 export const revalidate = 0;
 
@@ -15,11 +15,19 @@ type NewsRow = {
   published_at: string | null;
 };
 
+const FALLBACK_IMAGES = [
+  "/news/dot-inspection.jpg",
+  "/news/carb-electric.jpg",
+  "/news/cdl-driver.jpg",
+  "/news/truck-highway.jpg",
+  "/news/truck-white.jpg",
+  "/news/truck-dark.jpg",
+];
+
 async function fetchPost(id: string): Promise<NewsRow | null> {
   const url = process.env.SUPABASE_URL;
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (!url || !key) return null;
-  // 仅允许合法 UUID，避免拼接异常
   if (!/^[0-9a-f-]{36}$/i.test(id)) return null;
   try {
     const res = await fetch(
@@ -37,6 +45,32 @@ async function fetchPost(id: string): Promise<NewsRow | null> {
   }
 }
 
+async function fetchRelated(currentId: string): Promise<RelatedPost[]> {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  if (!url || !key) return [];
+  try {
+    const res = await fetch(
+      `${url}/rest/v1/news_posts?status=eq.published&id=neq.${currentId}&order=published_at.desc.nullslast&limit=3&select=id,title_zh,title_en,cover_image_url,published_at`,
+      {
+        headers: { apikey: key, Authorization: `Bearer ${key}` },
+        cache: "no-store",
+      }
+    );
+    if (!res.ok) return [];
+    const rows = (await res.json()) as NewsRow[];
+    return rows.map((r, i) => ({
+      id: r.id,
+      titleZh: r.title_zh,
+      titleEn: r.title_en || r.title_zh,
+      image: r.cover_image_url || FALLBACK_IMAGES[i % FALLBACK_IMAGES.length],
+      date: r.published_at ? r.published_at.slice(0, 10) : "",
+    }));
+  } catch {
+    return [];
+  }
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
   const post = await fetchPost(id);
@@ -49,7 +83,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
 export default async function NewsDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const post = await fetchPost(id);
+  const [post, related] = await Promise.all([fetchPost(id), fetchRelated(id)]);
   if (!post) notFound();
 
   const article: Article = {
@@ -62,5 +96,5 @@ export default async function NewsDetailPage({ params }: { params: Promise<{ id:
     sourceUrl: post.source_url || "",
   };
 
-  return <NewsArticle article={article} />;
+  return <NewsArticle article={article} related={related} />;
 }
