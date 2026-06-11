@@ -21,18 +21,21 @@ const NAV_LINKS: NavLink[] = [
 const SERVICES = [
   {
     icon: "🎓",
-    zh: { title: "职业英语培训", desc: "专为卡车司机设计的实用英语课程，覆盖路政检查对话、货运术语、安全法规沟通，帮助您在工作中自信表达。" },
-    en: { title: "Professional English", desc: "Practical English courses for truck drivers — covering DOT inspection dialogues, freight terminology, and safety communication." },
+    href: "https://info.npodia.org/training/english",
+    zh: { title: "职业英语培训", desc: "专为卡车司机设计的实用英语课程，覆盖路政检查对话、货运术语、安全法规沟通，帮助您在工作中自信表达。", cta: "免费开始练习 →" },
+    en: { title: "Professional English", desc: "Practical English courses for truck drivers — covering DOT inspection dialogues, freight terminology, and safety communication.", cta: "Start practicing free →" },
   },
   {
     icon: "📋",
-    zh: { title: "DOT/FMCSA 合规教育", desc: "系统讲解联邦和州级货运法规，包括 HOS 规则、ELD 要求、车辆检查标准，让合规不再是负担。" },
-    en: { title: "DOT/FMCSA Compliance", desc: "Systematic education on federal and state trucking regulations — HOS rules, ELD requirements, and vehicle inspection standards." },
+    href: "https://info.npodia.org/training/cdl",
+    zh: { title: "DOT/FMCSA 合规教育", desc: "系统讲解联邦和州级货运法规，包括 HOS 规则、ELD 要求、车辆检查标准，让合规不再是负担。", cta: "204 题 CDL 免费题库 →" },
+    en: { title: "DOT/FMCSA Compliance", desc: "Systematic education on federal and state trucking regulations — HOS rules, ELD requirements, and vehicle inspection standards.", cta: "Free 204-question CDL bank →" },
   },
   {
     icon: "🤝",
-    zh: { title: "行业资源与税务合规对接", desc: "连接优质会计、保险、法律等行业资源；税务合规指导帮助 Owner-Operator 正确申报，最大化合法抵扣。" },
-    en: { title: "Industry Resources & Tax", desc: "Connect with trusted accountants, insurers, and attorneys. Tax guidance helps Owner-Operators maximize legal deductions." },
+    href: "https://info.npodia.org/businesses",
+    zh: { title: "行业资源与税务合规对接", desc: "连接优质会计、保险、法律等行业资源；税务合规指导帮助 Owner-Operator 正确申报，最大化合法抵扣。", cta: "浏览商家名录 →" },
+    en: { title: "Industry Resources & Tax", desc: "Connect with trusted accountants, insurers, and attorneys. Tax guidance helps Owner-Operators maximize legal deductions.", cta: "Browse the directory →" },
   },
 ];
 
@@ -93,6 +96,10 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
 
   // Video player modal（存当前播放的 YouTube ID 与标题;id 为空串时显示「即将上线」占位）
   const [videoModal, setVideoModal] = useState<{ id: string; title: string } | null>(null);
+
+  // 没有任何已发布视频时，整个视频区块 + 导航入口都不渲染（避免「空店面」观感）
+  const hasVideos = videoCategories.length > 0;
+  const navLinks = hasVideos ? NAV_LINKS : NAV_LINKS.filter((l) => l.id !== "videos");
 
   useEffect(() => {
     const saved = localStorage.getItem("npodia-lang") as Lang | null;
@@ -185,7 +192,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
           </button>
 
           <div className="hidden md:flex items-center gap-1">
-            {NAV_LINKS.map((l) =>
+            {navLinks.map((l) =>
               l.href ? (
                 <a
                   key={l.id}
@@ -255,7 +262,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
 
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-white/10 py-3 px-6" style={{ backgroundColor: "rgba(15,36,71,0.98)" }}>
-            {NAV_LINKS.map((l) =>
+            {navLinks.map((l) =>
               l.href ? (
                 <a
                   key={l.id}
@@ -345,6 +352,16 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                 {t(lang, "申请会员", "Apply for Membership")}
               </button>
               <a
+                href="https://info.npodia.org/training/cdl"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-semibold transition-all hover:scale-105"
+                style={{ border: "2px solid #C8923D", color: "#E9C77E" }}
+              >
+                {t(lang, "免费 CDL 练习", "Free CDL Practice")}
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                </svg>
+              </a>
+              <a
                 href="https://info.npodia.org"
                 className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full font-semibold transition-all hover:bg-white/10"
                 style={{ border: "2px solid rgba(255,255,255,0.4)", color: "white" }}
@@ -358,9 +375,9 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
 
             <div className="flex gap-8 mt-16 pt-8 border-t border-white/10">
               {[
+                { num: "204", zh: "CDL 双语题免费练习", en: "Free Bilingual CDL Questions" },
+                { num: "8", zh: "卡车英语实战场景", en: "Truck English Scenarios" },
                 { num: "501(c)(3)", zh: "联邦认证非营利", en: "Federally Recognized" },
-                { num: "2026", zh: "加州正式注册", en: "California Incorporated" },
-                { num: "$1/$3/$12", zh: "年度会费", en: "Annual Membership" },
               ].map((s) => (
                 <div key={s.num}>
                   <div className="text-2xl font-bold text-white" style={{ fontFamily: "var(--font-display)" }}>
@@ -404,9 +421,10 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
           </p>
           <div className="grid md:grid-cols-3 gap-8">
             {SERVICES.map((s, i) => (
-              <div
+              <a
                 key={i}
-                className="p-8 rounded-2xl transition-all duration-300 hover:-translate-y-1 group cursor-default"
+                href={s.href}
+                className="p-8 rounded-2xl transition-all duration-300 hover:-translate-y-1 group flex flex-col"
                 style={{
                   backgroundColor: "white",
                   border: "1px solid rgba(15,36,71,0.08)",
@@ -432,7 +450,10 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                 <p className="leading-relaxed text-sm" style={{ color: "#4A5468" }}>
                   {t(lang, s.zh.desc, s.en.desc)}
                 </p>
-              </div>
+                <p className="mt-auto pt-5 text-sm font-semibold group-hover:underline" style={{ color: "#C8923D" }}>
+                  {t(lang, s.zh.cta, s.en.cta)}
+                </p>
+              </a>
             ))}
           </div>
         </div>
@@ -517,7 +538,8 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
         </div>
       </section>
 
-      {/* ── Videos ───────────────────────────────────────────────────── */}
+      {/* ── Videos（没有已发布视频时整块隐藏）──────────────────────────── */}
+      {hasVideos && (
       <section id="videos" className="py-24 px-6" style={{ backgroundColor: "#FAF7F2" }}>
         <div className="max-w-6xl mx-auto">
           <p className="text-xs font-semibold tracking-widest uppercase mb-3 text-center" style={{ color: "#C8923D" }}>
@@ -534,11 +556,6 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
           </p>
 
           <div className="space-y-14">
-            {videoCategories.length === 0 && (
-              <p className="text-center text-sm" style={{ color: "#4A5468" }}>
-                {t(lang, "视频即将上线，敬请期待。", "Videos coming soon.")}
-              </p>
-            )}
             {videoCategories.map((cat) => (
               <div key={cat.id}>
                 <div className="flex items-center gap-3 mb-6">
@@ -593,6 +610,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
           </div>
         </div>
       </section>
+      )}
 
       {/* ── Membership ───────────────────────────────────────────────── */}
       <section id="membership" className="py-24 px-6" style={{ backgroundColor: "#FAF7F2" }}>
@@ -1335,7 +1353,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
               </div>
             </div>
             <div className="flex gap-6">
-              {NAV_LINKS.map((l) =>
+              {navLinks.map((l) =>
                 l.href ? (
                   <a
                     key={l.id}

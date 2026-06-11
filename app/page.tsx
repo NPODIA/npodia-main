@@ -52,6 +52,8 @@ function buildVideoCategories(rows: VideoRow[]): VideoCategory[] {
     { id: "compliance", zh: "合规教育", en: "Compliance Education", videos: [] },
   ];
   for (const v of rows) {
+    // 跳过没有真实 YouTube ID 的占位条目，避免首页出现「即将上线」空卡片
+    if (!v.youtube_id) continue;
     const cat = cats.find((c) => c.id === v.category);
     if (cat) cat.videos.push({
       youtubeId: v.youtube_id,
