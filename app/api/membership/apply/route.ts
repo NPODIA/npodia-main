@@ -1,3 +1,27 @@
+const EMAIL_DOMAIN_TYPOS: Record<string, string> = {
+  "gmial.com": "gmail.com", "gamil.com": "gmail.com", "gmal.com": "gmail.com",
+  "gmai.com": "gmail.com", "gmali.com": "gmail.com", "gnail.com": "gmail.com",
+  "gmaill.com": "gmail.com", "gmeil.com": "gmail.com", "gmaik.com": "gmail.com",
+  "gmaol.com": "gmail.com", "gmail.con": "gmail.com", "gmail.co": "gmail.com",
+  "gmail.cm": "gmail.com", "gmail.om": "gmail.com", "gmal.con": "gmail.com",
+  "hotmial.com": "hotmail.com", "hotmal.com": "hotmail.com", "hotmil.com": "hotmail.com",
+  "hotmaill.com": "hotmail.com", "hotmail.con": "hotmail.com",
+  "yaho.com": "yahoo.com", "yahooo.com": "yahoo.com", "yhoo.com": "yahoo.com",
+  "yhaoo.com": "yahoo.com", "yahoo.con": "yahoo.com",
+  "outloo.com": "outlook.com", "outlok.com": "outlook.com", "outlookk.com": "outlook.com", "outlook.con": "outlook.com",
+  "iclod.com": "icloud.com", "icoud.com": "icloud.com", "icloude.com": "icloud.com", "icloud.con": "icloud.com",
+  "163.con": "163.com", "126.con": "126.com", "qq.con": "qq.com",
+};
+
+function suggestEmailDomain(email: string): string | null {
+  const at = email.lastIndexOf("@");
+  if (at < 1) return null;
+  const domain = email.slice(at + 1).toLowerCase().trim();
+  const correct = EMAIL_DOMAIN_TYPOS[domain];
+  if (!correct) return null;
+  return email.slice(0, at + 1) + correct;
+}
+
 const RESEND_API = "https://api.resend.com/emails";
 const ADMIN_EMAIL = "info@npodia.org";
 const FROM = "Drive Forward Immigrant Alliance <info@npodia.org>";
@@ -136,6 +160,11 @@ export async function POST(request: Request) {
   const { firstName, lastName, email, tier, lang } = body;
   if (!firstName?.trim() || !lastName?.trim() || !email?.trim() || !["standard", "aid", "volunteer"].includes(tier)) {
     return Response.json({ error: "Missing required fields" }, { status: 400 });
+  }
+
+  const emailSuggestion = suggestEmailDomain(email.trim());
+  if (emailSuggestion) {
+    return Response.json({ error: "Invalid email domain", suggestion: emailSuggestion }, { status: 400 });
   }
 
   const supabaseUrl = process.env.SUPABASE_URL;

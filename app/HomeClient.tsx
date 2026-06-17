@@ -57,6 +57,30 @@ export type VideoCategory = {
 };
 
 
+const EMAIL_DOMAIN_TYPOS: Record<string, string> = {
+  "gmial.com": "gmail.com", "gamil.com": "gmail.com", "gmal.com": "gmail.com",
+  "gmai.com": "gmail.com", "gmali.com": "gmail.com", "gnail.com": "gmail.com",
+  "gmaill.com": "gmail.com", "gmeil.com": "gmail.com", "gmaik.com": "gmail.com",
+  "gmaol.com": "gmail.com", "gmail.con": "gmail.com", "gmail.co": "gmail.com",
+  "gmail.cm": "gmail.com", "gmail.om": "gmail.com", "gmal.con": "gmail.com",
+  "hotmial.com": "hotmail.com", "hotmal.com": "hotmail.com", "hotmil.com": "hotmail.com",
+  "hotmaill.com": "hotmail.com", "hotmail.con": "hotmail.com",
+  "yaho.com": "yahoo.com", "yahooo.com": "yahoo.com", "yhoo.com": "yahoo.com",
+  "yhaoo.com": "yahoo.com", "yahoo.con": "yahoo.com",
+  "outloo.com": "outlook.com", "outlok.com": "outlook.com", "outlookk.com": "outlook.com", "outlook.con": "outlook.com",
+  "iclod.com": "icloud.com", "icoud.com": "icloud.com", "icloude.com": "icloud.com", "icloud.con": "icloud.com",
+  "163.con": "163.com", "126.con": "126.com", "qq.con": "qq.com",
+};
+
+function suggestEmailDomain(email: string): string | null {
+  const at = email.lastIndexOf("@");
+  if (at < 1) return null;
+  const domain = email.slice(at + 1).toLowerCase().trim();
+  const correct = EMAIL_DOMAIN_TYPOS[domain];
+  if (!correct) return null;
+  return email.slice(0, at + 1) + correct;
+}
+
 const FAQS = [
   {
     zh: { q: "谁可以申请会员？", a: "所有北美华人卡车从业者均可申请，包括 Owner-Operator、公司司机、调度员、货运经纪人及相关行业从业者。" },
@@ -93,6 +117,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
   const [membershipSent, setMembershipSent] = useState(false);
   const [membershipSubmitting, setMembershipSubmitting] = useState(false);
   const [membershipError, setMembershipError] = useState(false);
+  const [emailSuggestion, setEmailSuggestion] = useState("");
 
   // Video player modal（存当前播放的 YouTube ID 与标题;id 为空串时显示「即将上线」占位）
   const [videoModal, setVideoModal] = useState<{ id: string; title: string } | null>(null);
@@ -128,10 +153,12 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
     setMembershipSent(false);
     setMembershipError(false);
     setMembershipForm({ firstName: "", lastName: "", email: "", phone: "", message: "" });
+    setEmailSuggestion("");
   };
 
   const handleMembershipSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (emailSuggestion) return;
     setMembershipSubmitting(true);
     setMembershipError(false);
     try {
@@ -1188,7 +1215,12 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                     required
                     type="email"
                     value={membershipForm.email}
-                    onChange={e => setMembershipForm(p => ({ ...p, email: e.target.value }))}
+                    onChange={e => {
+                      const val = e.target.value;
+                      setMembershipForm(p => ({ ...p, email: val }));
+                      const suggestion = suggestEmailDomain(val);
+                      setEmailSuggestion(suggestion ?? "");
+                    }}
                     className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
                     style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
                     placeholder="your@email.com"
@@ -1196,6 +1228,25 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                   <p className="text-xs mt-1" style={{ color: "#9ca3af" }}>
                     {t(lang, "账号激活邮件将发至此邮箱", "Account activation will be sent to this email")}
                   </p>
+                  {emailSuggestion && (
+                    <p className="text-xs mt-1 font-medium" style={{ color: "#dc2626" }}>
+                      {t(lang,
+                        `邮箱域名可能拼写有误，您是不是要输入 ${emailSuggestion}？`,
+                        `Did you mean ${emailSuggestion}?`
+                      )}
+                      <button
+                        type="button"
+                        className="ml-2 underline"
+                        style={{ color: "#C8923D" }}
+                        onClick={() => {
+                          setMembershipForm(p => ({ ...p, email: emailSuggestion }));
+                          setEmailSuggestion("");
+                        }}
+                      >
+                        {t(lang, "点击修正", "Fix it")}
+                      </button>
+                    </p>
+                  )}
                 </div>
 
                 <div>
