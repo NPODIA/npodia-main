@@ -7,6 +7,10 @@ function hasCJK(s: string) {
   return /[一-鿿㐀-䶿]/.test(s);
 }
 
+function capitalize(s: string): string {
+  return s.replace(/\b\w/g, (c) => c.toUpperCase());
+}
+
 function formatPT() {
   const parts = new Intl.DateTimeFormat("en-CA", {
     timeZone: "America/Los_Angeles",
@@ -154,8 +158,8 @@ export async function POST(request: Request) {
         "Prefer": "return=minimal",
       },
       body: JSON.stringify({
-        first_name: firstName.trim(),
-        last_name: lastName.trim(),
+        first_name: hasCJK(firstName) ? firstName.trim() : capitalize(firstName.trim()),
+        last_name: hasCJK(lastName) ? lastName.trim() : capitalize(lastName.trim()),
         email: email.trim().toLowerCase(),
         phone: body.phone?.trim() || null,
         membership_tier: tier,
