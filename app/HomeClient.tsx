@@ -894,24 +894,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
           <p className="text-center mb-16 max-w-xl mx-auto" style={{ color: "#4A5468" }}>
             {t(lang, "有问题或想了解更多，欢迎通过以下方式联系我们。", "Have questions or want to learn more? Reach out through any of the channels below.")}
           </p>
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* WeChat */}
-            <div
-              className="p-8 rounded-2xl text-center"
-              style={{ backgroundColor: "white", border: "1px solid rgba(15,36,71,0.08)" }}
-            >
-              <div className="text-3xl mb-4">💬</div>
-              <h3 className="font-semibold mb-2" style={{ color: "#0F2447" }}>{t(lang, "微信", "WeChat")}</h3>
-              <p className="text-sm mb-4" style={{ color: "#4A5468" }}>ID: NPODIA</p>
-              <Image
-                src="/wechat-qr.jpg"
-                alt="WeChat QR Code"
-                width={160}
-                height={160}
-                className="mx-auto rounded-xl"
-              />
-            </div>
-
+          <div className="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
             {/* Email */}
             <div
               className="p-8 rounded-2xl text-center flex flex-col items-center justify-center"
@@ -1008,7 +991,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                   </div>
                   <div>
                     <label className="block text-xs font-medium mb-1.5" style={{ color: "#0F2447" }}>
-                      {t(lang, "微信 / 邮件", "WeChat / Email")} *
+                      {t(lang, "邮件 / 电话", "Email / Phone")} *
                     </label>
                     <input
                       required
