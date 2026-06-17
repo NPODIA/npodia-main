@@ -89,7 +89,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
 
   // Membership application modal
   const [membershipModal, setMembershipModal] = useState<"standard" | "aid" | "volunteer" | null>(null);
-  const [membershipForm, setMembershipForm] = useState({ firstName: "", lastName: "", email: "", phone: "", wechatId: "", message: "" });
+  const [membershipForm, setMembershipForm] = useState({ firstName: "", lastName: "", email: "", phone: "", message: "" });
   const [membershipSent, setMembershipSent] = useState(false);
   const [membershipSubmitting, setMembershipSubmitting] = useState(false);
   const [membershipError, setMembershipError] = useState(false);
@@ -127,7 +127,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
     setMembershipModal(tier);
     setMembershipSent(false);
     setMembershipError(false);
-    setMembershipForm({ firstName: "", lastName: "", email: "", phone: "", wechatId: "", message: "" });
+    setMembershipForm({ firstName: "", lastName: "", email: "", phone: "", message: "" });
   };
 
   const handleMembershipSubmit = async (e: React.FormEvent) => {
@@ -1215,33 +1215,18 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                   </p>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-medium mb-1.5" style={{ color: "#0F2447" }}>
-                      {t(lang, "微信号", "WeChat ID")}
-                    </label>
-                    <input
-                      type="text"
-                      value={membershipForm.wechatId}
-                      onChange={e => setMembershipForm(p => ({ ...p, wechatId: e.target.value }))}
-                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
-                      style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
-                      placeholder="NPODIA"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-xs font-medium mb-1.5" style={{ color: "#0F2447" }}>
-                      {t(lang, "电话", "Phone")}
-                    </label>
-                    <input
-                      type="tel"
-                      value={membershipForm.phone}
-                      onChange={e => setMembershipForm(p => ({ ...p, phone: e.target.value }))}
-                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
-                      style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
-                      placeholder="(626) 000-0000"
-                    />
-                  </div>
+                <div>
+                  <label className="block text-xs font-medium mb-1.5" style={{ color: "#0F2447" }}>
+                    {t(lang, "电话", "Phone")}
+                  </label>
+                  <input
+                    type="tel"
+                    value={membershipForm.phone}
+                    onChange={e => setMembershipForm(p => ({ ...p, phone: e.target.value }))}
+                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
+                    style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
+                    placeholder="(626) 000-0000"
+                  />
                 </div>
 
                 <div>

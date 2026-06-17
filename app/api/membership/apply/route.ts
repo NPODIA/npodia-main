@@ -37,13 +37,12 @@ function emailHeader(title: string) {
 
 function adminHtml(data: {
   firstName: string; lastName: string; email: string;
-  phone?: string; wechatId?: string; tier: string; message?: string; time: string;
+  phone?: string; tier: string; message?: string; time: string;
 }) {
   const rows = [
     ["姓名", `${data.firstName} ${data.lastName}`],
     ["邮件", data.email],
     ["电话", data.phone || "—"],
-    ["微信", data.wechatId || "—"],
     ["申请类型", tierLabel(data.tier, "zh")],
     ["留言 / 说明", data.message || "—"],
   ];
@@ -127,7 +126,7 @@ async function sendEmail(apiKey: string, payload: {
 export async function POST(request: Request) {
   const body = await request.json() as {
     firstName: string; lastName: string; email: string;
-    phone?: string; wechatId?: string; tier: string; message?: string; lang?: string;
+    phone?: string; tier: string; message?: string; lang?: string;
   };
 
   const { firstName, lastName, email, tier, lang } = body;
@@ -159,7 +158,6 @@ export async function POST(request: Request) {
         last_name: lastName.trim(),
         email: email.trim().toLowerCase(),
         phone: body.phone?.trim() || null,
-        wechat_id: body.wechatId?.trim() || null,
         membership_tier: tier,
         message: body.message?.trim() || null,
       }),
