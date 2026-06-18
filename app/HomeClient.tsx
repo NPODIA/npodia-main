@@ -179,6 +179,37 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const isOpen = membershipModal || videoModal;
+    if (!isOpen) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (membershipModal) setMembershipModal(null);
+        if (videoModal) setVideoModal(null);
+        return;
+      }
+      if (e.key === "Tab") {
+        const modal = document.querySelector("[data-modal]") as HTMLElement | null;
+        if (!modal) return;
+        const focusable = modal.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey) {
+          if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+        } else {
+          if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [membershipModal, videoModal]);
+
   const switchLang = () => {
     const next: Lang = lang === "zh" ? "en" : "zh";
     setLang(next);
@@ -350,6 +381,28 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                 </button>
               )
             )}
+            <div className="flex items-center rounded-full overflow-hidden text-xs mt-3" style={{ border: "1px solid rgba(255,255,255,0.25)" }}>
+              {(["zh", "en"] as Lang[]).map((l) => (
+                <button
+                  key={l}
+                  onClick={() => { setLang(l); localStorage.setItem("npodia-lang", l); setMobileMenuOpen(false); }}
+                  className="flex-1 px-3 py-2 transition-all text-center"
+                  style={{
+                    backgroundColor: lang === l ? "rgba(255,255,255,0.18)" : "transparent",
+                    color: lang === l ? "white" : "rgba(255,255,255,0.5)",
+                  }}
+                >
+                  {l === "zh" ? "中文" : "EN"}
+                </button>
+              ))}
+            </div>
+            <a
+              href="https://info.npodia.org/login"
+              className="block w-full text-center text-sm px-4 py-2.5 rounded-full font-medium mt-2 transition-all"
+              style={{ border: "1px solid rgba(255,255,255,0.3)", color: "rgba(255,255,255,0.85)" }}
+            >
+              {t(lang, "登录", "Login")}
+            </a>
             <button
               onClick={() => scrollTo("membership")}
               className="mt-3 w-full text-sm px-4 py-2.5 rounded-full font-medium"
@@ -1143,8 +1196,11 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
           className="fixed inset-0 z-[200] flex items-center justify-center p-4"
           style={{ backgroundColor: "rgba(10,24,48,0.75)", backdropFilter: "blur(4px)" }}
           onClick={(e) => { if (e.target === e.currentTarget) setMembershipModal(null); }}
+          aria-modal="true"
+          role="dialog"
         >
           <div
+            data-modal
             className="w-full max-w-lg rounded-2xl overflow-hidden shadow-2xl"
             style={{ backgroundColor: "white", maxHeight: "90vh", overflowY: "auto" }}
           >
@@ -1365,8 +1421,10 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
           className="fixed inset-0 z-[200] flex items-center justify-center p-4"
           style={{ backgroundColor: "rgba(10,24,48,0.85)", backdropFilter: "blur(4px)" }}
           onClick={(e) => { if (e.target === e.currentTarget) setVideoModal(null); }}
+          aria-modal="true"
+          role="dialog"
         >
-          <div className="w-full max-w-3xl">
+          <div data-modal className="w-full max-w-3xl">
             <div className="flex items-center justify-between mb-3">
               <p className="text-white font-medium text-sm pr-4">{videoModal.title}</p>
               <button
