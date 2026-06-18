@@ -32,7 +32,7 @@ function hasCJK(s: string) {
 }
 
 function capitalize(s: string): string {
-  return s.replace(/\b\w/g, (c) => c.toUpperCase());
+  return s.toLowerCase().replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
 function formatPT() {

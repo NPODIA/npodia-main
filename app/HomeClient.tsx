@@ -297,7 +297,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                 <a
                   key={l.id}
                   href={l.href}
-                  className="text-white/80 hover:text-white px-4 py-2 text-sm rounded-lg transition-colors hover:bg-white/10"
+                  className="text-white/80 hover:text-white px-3 py-1.5 text-sm rounded-lg transition-colors hover:bg-white/10"
                 >
                   {t(lang, l.zh, l.en)}
                 </a>
@@ -305,7 +305,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                 <button
                   key={l.id}
                   onClick={() => scrollTo(l.id)}
-                  className="text-white/80 hover:text-white px-4 py-2 text-sm rounded-lg transition-colors hover:bg-white/10"
+                  className="text-white/80 hover:text-white px-3 py-1.5 text-sm rounded-lg transition-colors hover:bg-white/10"
                 >
                   {t(lang, l.zh, l.en)}
                 </button>
