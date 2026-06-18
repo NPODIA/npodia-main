@@ -18,21 +18,63 @@ const NAV_LINKS: NavLink[] = [
   { id: "community", zh: "社区", en: "Community", href: "https://info.npodia.org" },
 ];
 
+const IconGraduationCap = () => (
+  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15v3.75m0 0v1.5a.75.75 0 0 0 1.5 0v-1.5m-1.5 0h1.5" />
+  </svg>
+);
+
+const IconClipboard = () => (
+  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15a2.25 2.25 0 0 1 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z" />
+  </svg>
+);
+
+const IconUsers = () => (
+  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+  </svg>
+);
+
+const IconGlobe = () => (
+  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
+  </svg>
+);
+
+const IconScale = () => (
+  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0 0 12 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 0 1-2.031.352 5.988 5.988 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971Zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0 2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 0 1-2.031.352 5.989 5.989 0 0 1-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971Z" />
+  </svg>
+);
+
+const IconEnvelope = () => (
+  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75" />
+  </svg>
+);
+
+const IconPlay = () => (
+  <svg className="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+  </svg>
+);
+
 const SERVICES = [
   {
-    icon: "🎓",
+    icon: <IconGraduationCap />,
     href: "https://info.npodia.org/training/english",
     zh: { title: "职业英语培训", desc: "专为卡车司机设计的实用英语课程，覆盖路政检查对话、货运术语、安全法规沟通，帮助您在工作中自信表达。", cta: "免费开始练习 →" },
     en: { title: "Professional English", desc: "Practical English courses for truck drivers — covering DOT inspection dialogues, freight terminology, and safety communication.", cta: "Start practicing free →" },
   },
   {
-    icon: "📋",
+    icon: <IconClipboard />,
     href: "https://info.npodia.org/training/cdl",
     zh: { title: "DOT/FMCSA 合规教育", desc: "系统讲解联邦和州级货运法规，包括 HOS 规则、ELD 要求、车辆检查标准，让合规不再是负担。", cta: "204 题 CDL 免费题库 →" },
     en: { title: "DOT/FMCSA Compliance", desc: "Systematic education on federal and state trucking regulations — HOS rules, ELD requirements, and vehicle inspection standards.", cta: "Free 204-question CDL bank →" },
   },
   {
-    icon: "🤝",
+    icon: <IconUsers />,
     href: "https://info.npodia.org/businesses",
     zh: { title: "行业资源与税务合规对接", desc: "连接优质会计、保险、法律等行业资源；税务合规指导帮助 Owner-Operator 正确申报，最大化合法抵扣。", cta: "浏览商家名录 →" },
     en: { title: "Industry Resources & Tax", desc: "Connect with trusted accountants, insurers, and attorneys. Tax guidance helps Owner-Operators maximize legal deductions.", cta: "Browse the directory →" },
@@ -400,7 +442,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
               </a>
             </div>
 
-            <div className="flex gap-8 mt-16 pt-8 border-t border-white/10">
+            <div className="flex flex-wrap gap-8 mt-16 pt-8 border-t border-white/10">
               {[
                 { num: "204", zh: "CDL 双语题免费练习", en: "Free Bilingual CDL Questions" },
                 { num: "8", zh: "卡车英语实战场景", en: "Truck English Scenarios" },
@@ -430,7 +472,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
       {/* ── Services ─────────────────────────────────────────────────── */}
       <section id="services" className="py-24 px-6" style={{ backgroundColor: "#FAF7F2" }}>
         <div className="max-w-6xl mx-auto">
-          <p className="text-xs font-semibold tracking-widest uppercase mb-3 text-center" style={{ color: "#C8923D" }}>
+          <p className="text-xs font-semibold tracking-widest uppercase mb-3 text-center" style={{ color: "#996B1D" }}>
             {t(lang, "我们的服务", "What We Offer")}
           </p>
           <h2
@@ -459,8 +501,8 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                 }}
               >
                 <div
-                  className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl mb-6 transition-colors"
-                  style={{ backgroundColor: "#E9D9B6" }}
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center mb-6 transition-colors"
+                  style={{ backgroundColor: "#E9D9B6", color: "#7A5520" }}
                 >
                   {s.icon}
                 </div>
@@ -477,7 +519,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                 <p className="leading-relaxed text-sm" style={{ color: "#4A5468" }}>
                   {t(lang, s.zh.desc, s.en.desc)}
                 </p>
-                <p className="mt-auto pt-5 text-sm font-semibold group-hover:underline" style={{ color: "#C8923D" }}>
+                <p className="mt-auto pt-5 text-sm font-semibold group-hover:underline" style={{ color: "#996B1D" }}>
                   {t(lang, s.zh.cta, s.en.cta)}
                 </p>
               </a>
@@ -489,7 +531,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
       {/* ── News ─────────────────────────────────────────────────────── */}
       <section id="news" className="py-24 px-6" style={{ backgroundColor: "#F5EFE4" }}>
         <div className="max-w-6xl mx-auto">
-          <p className="text-xs font-semibold tracking-widest uppercase mb-3 text-center" style={{ color: "#C8923D" }}>
+          <p className="text-xs font-semibold tracking-widest uppercase mb-3 text-center" style={{ color: "#996B1D" }}>
             {t(lang, "最新行业资讯", "Industry News")}
           </p>
           <h2
@@ -508,10 +550,10 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
               };
               const inner = (
                 <>
-                  <div className="h-36 relative overflow-hidden">
+                  <div className="aspect-[16/9] relative overflow-hidden">
                     <Image
                       src={n.image}
-                      alt={t(lang, n.zh.tag, n.en.tag)}
+                      alt={t(lang, n.zh.title, n.en.title)}
                       fill
                       className="object-cover"
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -535,7 +577,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                     <p className="text-sm leading-relaxed line-clamp-3" style={{ color: "#4A5468" }}>
                       {t(lang, n.zh.excerpt, n.en.excerpt)}
                     </p>
-                    <p className="mt-3 text-xs font-medium" style={{ color: "#C8923D" }}>
+                    <p className="mt-3 text-xs font-medium" style={{ color: "#996B1D" }}>
                       {t(lang, "阅读全文 →", "Read more →")}
                     </p>
                   </div>
@@ -569,7 +611,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
       {hasVideos && (
       <section id="videos" className="py-24 px-6" style={{ backgroundColor: "#FAF7F2" }}>
         <div className="max-w-6xl mx-auto">
-          <p className="text-xs font-semibold tracking-widest uppercase mb-3 text-center" style={{ color: "#C8923D" }}>
+          <p className="text-xs font-semibold tracking-widest uppercase mb-3 text-center" style={{ color: "#996B1D" }}>
             {t(lang, "视频中心", "Video Center")}
           </p>
           <h2
@@ -641,8 +683,8 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
 
       {/* ── Membership ───────────────────────────────────────────────── */}
       <section id="membership" className="py-24 px-6" style={{ backgroundColor: "#FAF7F2" }}>
-        <div className="max-w-5xl mx-auto">
-          <p className="text-xs font-semibold tracking-widest uppercase mb-3 text-center" style={{ color: "#C8923D" }}>
+        <div className="max-w-6xl mx-auto">
+          <p className="text-xs font-semibold tracking-widest uppercase mb-3 text-center" style={{ color: "#996B1D" }}>
             {t(lang, "加入我们", "Membership")}
           </p>
           <h2
@@ -658,19 +700,19 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
               "Low barrier, real resources. Three membership tiers so every professional can join."
             )}
           </p>
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
             {/* Standard */}
             <div
               className="p-8 rounded-2xl"
               style={{ backgroundColor: "white", border: "2px solid #C8923D", boxShadow: "0 4px 24px rgba(200,146,61,0.15)" }}
             >
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: "#C8923D" }}>
+                <span className="text-xs font-semibold tracking-widest uppercase" style={{ color: "#996B1D" }}>
                   {t(lang, "标准会员", "Standard")}
                 </span>
                 <span
                   className="text-xs px-2 py-0.5 rounded-full font-medium"
-                  style={{ backgroundColor: "#E9D9B6", color: "#C8923D" }}
+                  style={{ backgroundColor: "#E9D9B6", color: "#996B1D" }}
                 >
                   {t(lang, "推荐", "Popular")}
                 </span>
@@ -688,7 +730,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                   t(lang, "更多会员福利敬请期待", "More member benefits coming soon"),
                 ].map((item, i) => (
                   <li key={i} className="flex items-start gap-3 text-sm" style={{ color: "#1A1F2E" }}>
-                    <span className="mt-0.5 shrink-0 text-base" style={{ color: "#C8923D" }}>✓</span>
+                    <span className="mt-0.5 shrink-0 text-base" style={{ color: "#996B1D" }}>✓</span>
                     {item}
                   </li>
                 ))}
@@ -830,17 +872,17 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
           <div className="grid md:grid-cols-3 gap-6 mb-20">
             {[
               {
-                icon: "🌐",
+                icon: <IconGlobe />,
                 zh: { title: "语言不再是障碍", desc: "用母语学习，用英文执行。我们的课程让语言成为您的优势，而非劣势。" },
                 en: { title: "Language Is No Barrier", desc: "Learn in your native language, execute in English. Our courses turn language into your advantage." },
               },
               {
-                icon: "⚖️",
+                icon: <IconScale />,
                 zh: { title: "合规就是竞争力", desc: "了解法规、避免违规、保住营业执照。合规的司机，才能走得更长远。" },
                 en: { title: "Compliance Is Competitive Advantage", desc: "Know the rules, avoid violations, protect your license. Compliant drivers go further." },
               },
               {
-                icon: "👥",
+                icon: <IconUsers />,
                 zh: { title: "社群的力量", desc: "遇到问题不再孤立无援。DIA 把最有经验的从业者连接在一起，共享资源。" },
                 en: { title: "The Power of Community", desc: "No more facing challenges alone. DIA connects experienced professionals to share knowledge and resources." },
               },
@@ -850,7 +892,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                 className="p-6 rounded-2xl"
                 style={{ backgroundColor: "rgba(255,255,255,0.06)", border: "1px solid rgba(255,255,255,0.1)" }}
               >
-                <div className="text-3xl mb-4">{v.icon}</div>
+                <div className="mb-4" style={{ color: "rgba(255,255,255,0.8)" }}>{v.icon}</div>
                 <h3 className="text-white font-semibold mb-3" style={{ fontFamily: "var(--font-display)" }}>
                   {t(lang, v.zh.title, v.en.title)}
                 </h3>
@@ -867,7 +909,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
       {/* ── FAQ ──────────────────────────────────────────────────────── */}
       <section className="py-24 px-6" style={{ backgroundColor: "#F5EFE4" }}>
         <div className="max-w-3xl mx-auto">
-          <p className="text-xs font-semibold tracking-widest uppercase mb-3 text-center" style={{ color: "#C8923D" }}>FAQ</p>
+          <p className="text-xs font-semibold tracking-widest uppercase mb-3 text-center" style={{ color: "#996B1D" }}>FAQ</p>
           <h2
             className="text-center mb-12"
             style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.5rem, 2.2vw, 2rem)", color: "#0F2447" }}
@@ -890,7 +932,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                   </span>
                   <span
                     className="ml-4 shrink-0 text-lg font-light transition-transform"
-                    style={{ color: "#C8923D", transform: openFaq === i ? "rotate(45deg)" : "rotate(0deg)" }}
+                    style={{ color: "#996B1D", transform: openFaq === i ? "rotate(45deg)" : "rotate(0deg)" }}
                   >
                     +
                   </span>
@@ -909,7 +951,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
       {/* ── Contact ──────────────────────────────────────────────────── */}
       <section id="contact" className="py-24 px-6" style={{ backgroundColor: "#FAF7F2" }}>
         <div className="max-w-6xl mx-auto">
-          <p className="text-xs font-semibold tracking-widest uppercase mb-3 text-center" style={{ color: "#C8923D" }}>
+          <p className="text-xs font-semibold tracking-widest uppercase mb-3 text-center" style={{ color: "#996B1D" }}>
             {t(lang, "联系我们", "Get in Touch")}
           </p>
           <h2
@@ -927,12 +969,12 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
               className="p-8 rounded-2xl text-center flex flex-col items-center justify-center"
               style={{ backgroundColor: "white", border: "1px solid rgba(15,36,71,0.08)" }}
             >
-              <div className="text-3xl mb-4">✉️</div>
+              <div className="mb-4" style={{ color: "#7A5520" }}><IconEnvelope /></div>
               <h3 className="font-semibold mb-2" style={{ color: "#0F2447" }}>{t(lang, "邮件", "Email")}</h3>
               <a
                 href="mailto:info@npodia.org"
                 className="text-sm font-medium hover:underline"
-                style={{ color: "#C8923D" }}
+                style={{ color: "#996B1D" }}
               >
                 info@npodia.org
               </a>
@@ -946,14 +988,14 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
               className="p-8 rounded-2xl text-center flex flex-col items-center justify-center"
               style={{ backgroundColor: "white", border: "1px solid rgba(15,36,71,0.08)" }}
             >
-              <div className="text-3xl mb-4">▶️</div>
+              <div className="mb-4" style={{ color: "#7A5520" }}><IconPlay /></div>
               <h3 className="font-semibold mb-2" style={{ color: "#0F2447" }}>YouTube</h3>
               <a
                 href="https://youtube.com/@npodiaorg"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm font-medium hover:underline"
-                style={{ color: "#C8923D" }}
+                style={{ color: "#996B1D" }}
               >
                 @npodiaorg
               </a>
@@ -990,7 +1032,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                 <button
                   onClick={() => setFormSent(false)}
                   className="mt-5 text-sm underline"
-                  style={{ color: "#C8923D" }}
+                  style={{ color: "#996B1D" }}
                 >
                   {t(lang, "再次留言", "Send another message")}
                 </button>
@@ -1011,7 +1053,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                       type="text"
                       value={form.name}
                       onChange={e => setForm(p => ({ ...p, name: e.target.value }))}
-                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
+                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#C8923D]"
                       style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
                       placeholder={t(lang, "您的姓名", "Your name")}
                     />
@@ -1025,7 +1067,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                       type="text"
                       value={form.contact}
                       onChange={e => setForm(p => ({ ...p, contact: e.target.value }))}
-                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
+                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#C8923D]"
                       style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
                       placeholder={t(lang, "方便联系您的方式", "How to reach you")}
                     />
@@ -1039,7 +1081,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                     required
                     value={form.subject}
                     onChange={e => setForm(p => ({ ...p, subject: e.target.value }))}
-                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 bg-white"
+                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#C8923D] bg-white"
                     style={{ border: "1px solid rgba(15,36,71,0.15)", color: form.subject ? "#1A1F2E" : "#9CA3AF" }}
                   >
                     <option value="" disabled>{t(lang, "请选择事由", "Select a subject")}</option>
@@ -1069,7 +1111,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                     rows={4}
                     value={form.message}
                     onChange={e => setForm(p => ({ ...p, message: e.target.value }))}
-                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 resize-none"
+                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#C8923D] resize-none"
                     style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
                     placeholder={t(lang, "请描述您的情况或问题…", "Please describe your situation or question…")}
                   />
@@ -1186,7 +1228,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                       type="text"
                       value={membershipForm.firstName}
                       onChange={e => setMembershipForm(p => ({ ...p, firstName: e.target.value }))}
-                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
+                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#C8923D]"
                       style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
                       placeholder={t(lang, "名字", "First name")}
                     />
@@ -1200,7 +1242,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                       type="text"
                       value={membershipForm.lastName}
                       onChange={e => setMembershipForm(p => ({ ...p, lastName: e.target.value }))}
-                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
+                      className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#C8923D]"
                       style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
                       placeholder={t(lang, "姓氏", "Last name")}
                     />
@@ -1221,7 +1263,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                       const suggestion = suggestEmailDomain(val);
                       setEmailSuggestion(suggestion ?? "");
                     }}
-                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
+                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#C8923D]"
                     style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
                     placeholder="your@email.com"
                   />
@@ -1237,7 +1279,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                       <button
                         type="button"
                         className="ml-2 underline"
-                        style={{ color: "#C8923D" }}
+                        style={{ color: "#996B1D" }}
                         onClick={() => {
                           setMembershipForm(p => ({ ...p, email: emailSuggestion }));
                           setEmailSuggestion("");
@@ -1257,7 +1299,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                     type="tel"
                     value={membershipForm.phone}
                     onChange={e => setMembershipForm(p => ({ ...p, phone: e.target.value }))}
-                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2"
+                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#C8923D]"
                     style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
                     placeholder="(626) 000-0000"
                   />
@@ -1275,7 +1317,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                     rows={3}
                     value={membershipForm.message}
                     onChange={e => setMembershipForm(p => ({ ...p, message: e.target.value }))}
-                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 resize-none"
+                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#C8923D] resize-none"
                     style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
                     placeholder={t(
                       lang,
@@ -1367,7 +1409,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
               <div>
                 <p className="text-white font-semibold text-sm">Drive Forward Immigrant Alliance</p>
                 <p className="text-xs" style={{ color: "rgba(255,255,255,0.45)" }}>
-                  {t(lang, "移路前行联盟", "移路前行联盟")}
+                  {t(lang, "移路前行联盟", "Drive Forward Alliance")}
                 </p>
               </div>
             </div>

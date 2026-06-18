@@ -33,12 +33,6 @@ export default function NewsArticle({ article, related = [] }: { article: Articl
     if (saved === "zh" || saved === "en") setLang(saved);
   }, []);
 
-  const switchLang = () => {
-    const next: Lang = lang === "zh" ? "en" : "zh";
-    setLang(next);
-    localStorage.setItem("npodia-lang", next);
-  };
-
   const title = t(lang, article.titleZh, article.titleEn || article.titleZh);
   const content = t(lang, article.contentZh, article.contentEn || article.contentZh);
   const paragraphs = content.split(/\n+/).map((p) => p.trim()).filter(Boolean);
@@ -46,22 +40,40 @@ export default function NewsArticle({ article, related = [] }: { article: Articl
   return (
     <main style={{ backgroundColor: "#FAF7F2", minHeight: "100vh" }}>
       <div className="sticky top-0 z-50" style={{ backgroundColor: "#0F2447" }}>
-        <div className="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between">
+        <div className="max-w-3xl mx-auto px-6 h-16 flex items-center justify-between relative">
           <Link href="/news" className="text-sm text-white/75 hover:text-white transition-colors">
             ← {t(lang, "全部资讯", "All News")}
           </Link>
-          <button
-            onClick={switchLang}
-            className="text-sm font-medium px-3 py-1.5 rounded-lg transition-colors"
-            style={{ backgroundColor: "rgba(255,255,255,0.12)", color: "#fff" }}
+          <Link
+            href="/"
+            className="text-white font-semibold tracking-wide text-sm absolute left-1/2 -translate-x-1/2"
+            style={{ fontFamily: "var(--font-display)" }}
           >
-            {t(lang, "EN", "中文")}
-          </button>
+            DIA
+          </Link>
+          <div
+            className="flex items-center rounded-full overflow-hidden text-xs"
+            style={{ border: "1px solid rgba(255,255,255,0.25)" }}
+          >
+            {(["zh", "en"] as Lang[]).map((l) => (
+              <button
+                key={l}
+                onClick={() => { setLang(l); localStorage.setItem("npodia-lang", l); }}
+                className="px-3 py-1.5 transition-all"
+                style={{
+                  backgroundColor: lang === l ? "#0F2447" : "transparent",
+                  color: lang === l ? "white" : "rgba(255,255,255,0.5)",
+                }}
+              >
+                {l === "zh" ? "中" : "EN"}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       <article className="max-w-3xl mx-auto px-6 py-12">
-        <p className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: "#C8923D" }}>
+        <p className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: "#996B1D" }}>
           {t(lang, "行业资讯", "Industry News")}
         </p>
         <h1
@@ -100,7 +112,7 @@ export default function NewsArticle({ article, related = [] }: { article: Articl
               target="_blank"
               rel="noopener noreferrer"
               className="underline hover:no-underline"
-              style={{ color: "#C8923D" }}
+              style={{ color: "#996B1D" }}
             >
               {article.sourceUrl}
             </a>
@@ -124,7 +136,7 @@ export default function NewsArticle({ article, related = [] }: { article: Articl
                     boxShadow: "0 2px 8px rgba(15,36,71,0.05)",
                   }}
                 >
-                  <div className="h-24 relative overflow-hidden">
+                  <div className="aspect-[16/9] relative overflow-hidden">
                     <Image
                       src={post.image}
                       alt={t(lang, post.titleZh, post.titleEn)}
@@ -147,7 +159,7 @@ export default function NewsArticle({ article, related = [] }: { article: Articl
               <Link
                 href="/news"
                 className="text-sm font-medium hover:underline"
-                style={{ color: "#C8923D" }}
+                style={{ color: "#996B1D" }}
               >
                 {t(lang, "查看全部资讯 →", "View All News →")}
               </Link>

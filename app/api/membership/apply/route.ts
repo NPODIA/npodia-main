@@ -107,7 +107,7 @@ function confirmHtmlZh(firstName: string, tier: string, time: string) {
   <p style="margin:0;font-size:14px;line-height:1.6">
     <strong>DIA 团队</strong><br>
     移路前行联盟 · Drive Forward Immigrant Alliance<br>
-    <a href="mailto:info@npodia.org" style="color:#C8923D;text-decoration:none">info@npodia.org</a>
+    <a href="mailto:info@npodia.org" style="color:#996B1D;text-decoration:none">info@npodia.org</a>
   </p>
   <p style="color:#9ca3af;font-size:12px;margin:16px 0 0">提交时间 · ${time}</p>
 </div>
@@ -133,7 +133,7 @@ function confirmHtmlEn(firstName: string, tier: string, time: string) {
   <p style="margin:0;font-size:14px;line-height:1.6">
     <strong>DIA Team</strong><br>
     Drive Forward Immigrant Alliance · 移路前行联盟<br>
-    <a href="mailto:info@npodia.org" style="color:#C8923D;text-decoration:none">info@npodia.org</a>
+    <a href="mailto:info@npodia.org" style="color:#996B1D;text-decoration:none">info@npodia.org</a>
   </p>
   <p style="color:#9ca3af;font-size:12px;margin:16px 0 0">Submitted · ${time}</p>
 </div>

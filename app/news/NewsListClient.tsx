@@ -25,12 +25,6 @@ export default function NewsListClient({ posts }: { posts: Post[] }) {
     if (saved === "zh" || saved === "en") setLang(saved);
   }, []);
 
-  const switchLang = () => {
-    const next: Lang = lang === "zh" ? "en" : "zh";
-    setLang(next);
-    localStorage.setItem("npodia-lang", next);
-  };
-
   return (
     <main style={{ backgroundColor: "#FAF7F2", minHeight: "100vh" }}>
       <div className="sticky top-0 z-50" style={{ backgroundColor: "#0F2447" }}>
@@ -38,18 +32,36 @@ export default function NewsListClient({ posts }: { posts: Post[] }) {
           <Link href="/#news" className="text-sm text-white/75 hover:text-white transition-colors">
             ← {t(lang, "返回首页", "Back to Home")}
           </Link>
-          <button
-            onClick={switchLang}
-            className="text-sm font-medium px-3 py-1.5 rounded-lg transition-colors"
-            style={{ backgroundColor: "rgba(255,255,255,0.12)", color: "#fff" }}
+          <Link
+            href="/"
+            className="text-white font-semibold tracking-wide text-sm absolute left-1/2 -translate-x-1/2"
+            style={{ fontFamily: "var(--font-display)" }}
           >
-            {t(lang, "EN", "中文")}
-          </button>
+            DIA
+          </Link>
+          <div
+            className="flex items-center rounded-full overflow-hidden text-xs"
+            style={{ border: "1px solid rgba(255,255,255,0.25)" }}
+          >
+            {(["zh", "en"] as Lang[]).map((l) => (
+              <button
+                key={l}
+                onClick={() => { setLang(l); localStorage.setItem("npodia-lang", l); }}
+                className="px-3 py-1.5 transition-all"
+                style={{
+                  backgroundColor: lang === l ? "#0F2447" : "transparent",
+                  color: lang === l ? "white" : "rgba(255,255,255,0.5)",
+                }}
+              >
+                {l === "zh" ? "中" : "EN"}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
       <div className="max-w-6xl mx-auto px-6 py-12">
-        <p className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: "#C8923D" }}>
+        <p className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: "#996B1D" }}>
           {t(lang, "行业资讯", "Industry News")}
         </p>
         <h1
@@ -71,7 +83,7 @@ export default function NewsListClient({ posts }: { posts: Post[] }) {
                 boxShadow: "0 2px 12px rgba(15,36,71,0.06)",
               }}
             >
-              <div className="h-36 relative overflow-hidden">
+              <div className="aspect-[16/9] relative overflow-hidden">
                 <Image
                   src={post.image}
                   alt={t(lang, post.titleZh, post.titleEn)}
@@ -98,7 +110,7 @@ export default function NewsListClient({ posts }: { posts: Post[] }) {
                 <p className="text-sm leading-relaxed line-clamp-3" style={{ color: "#4A5468" }}>
                   {t(lang, post.excerptZh, post.excerptEn)}
                 </p>
-                <p className="mt-3 text-xs font-medium" style={{ color: "#C8923D" }}>
+                <p className="mt-3 text-xs font-medium" style={{ color: "#996B1D" }}>
                   {t(lang, "阅读全文 →", "Read more →")}
                 </p>
               </div>
