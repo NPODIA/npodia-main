@@ -123,6 +123,14 @@ function suggestEmailDomain(email: string): string | null {
   return email.slice(0, at + 1) + correct;
 }
 
+// 美国电话校验：默认 +1，接受 10 位（或 1 + 10 位）。返回 E.164 格式。
+function normalizeUSPhone(raw: string): { ok: boolean; e164?: string } {
+  const digits = raw.replace(/\D/g, "");
+  if (digits.length === 10) return { ok: true, e164: "+1" + digits };
+  if (digits.length === 11 && digits.startsWith("1")) return { ok: true, e164: "+" + digits };
+  return { ok: false };
+}
+
 const FAQS = [
   {
     zh: { q: "谁可以申请会员？", a: "所有北美华人卡车从业者均可申请，包括 Owner-Operator、公司司机、调度员、货运经纪人及相关行业从业者。" },
@@ -160,6 +168,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
   const [membershipSubmitting, setMembershipSubmitting] = useState(false);
   const [membershipError, setMembershipError] = useState(false);
   const [emailSuggestion, setEmailSuggestion] = useState("");
+  const [phoneError, setPhoneError] = useState("");
 
   // Video player modal（存当前播放的 YouTube ID 与标题;id 为空串时显示「即将上线」占位）
   const [videoModal, setVideoModal] = useState<{ id: string; title: string } | null>(null);
@@ -227,18 +236,30 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
     setMembershipError(false);
     setMembershipForm({ firstName: "", lastName: "", email: "", phone: "", message: "" });
     setEmailSuggestion("");
+    setPhoneError("");
   };
 
   const handleMembershipSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (emailSuggestion) return;
+    const rawPhone = membershipForm.phone.trim();
+    let normalizedPhone = "";
+    if (rawPhone) {
+      const p = normalizeUSPhone(rawPhone);
+      if (!p.ok) {
+        setPhoneError(t(lang, "请输入有效的美国电话号码（10 位）", "Please enter a valid US phone number (10 digits)"));
+        return;
+      }
+      normalizedPhone = p.e164!;
+    }
+    setPhoneError("");
     setMembershipSubmitting(true);
     setMembershipError(false);
     try {
       const res = await fetch("/api/membership/apply", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ ...membershipForm, tier: membershipModal, lang }),
+        body: JSON.stringify({ ...membershipForm, phone: normalizedPhone, tier: membershipModal, lang }),
       });
       if (res.ok) setMembershipSent(true);
       else setMembershipError(true);
@@ -1235,8 +1256,8 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                 <p className="text-sm leading-relaxed mb-6" style={{ color: "#4A5468" }}>
                   {t(
                     lang,
-                    "我们已收到您的会员申请，管理员将在 3–5 个工作日内通过邮件联系您，说明付款方式（Zelle）及账号激活步骤。",
-                    "We've received your application. Our team will email you within 3–5 business days with payment instructions (Zelle) and account activation steps."
+                    "我们已收到您的会员申请，并已把 Zelle 付款方式发到您的邮箱。请尽快扫码支付年费完成入会；我们核对到账后会尽快发送账号激活邮件。",
+                    "We've received your application and emailed you the Zelle payment details. Please pay your annual dues soon to complete your membership; we'll send your account activation email once we confirm receipt."
                   )}
                 </p>
                 <button
@@ -1351,14 +1372,20 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                   <label className="block text-xs font-medium mb-1.5" style={{ color: "#0F2447" }}>
                     {t(lang, "电话", "Phone")}
                   </label>
-                  <input
-                    type="tel"
-                    value={membershipForm.phone}
-                    onChange={e => setMembershipForm(p => ({ ...p, phone: e.target.value }))}
-                    className="w-full px-4 py-2.5 rounded-xl text-sm outline-none focus:ring-2 focus:ring-[#C8923D]"
-                    style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
-                    placeholder="(626) 000-0000"
-                  />
+                  <div className="flex items-stretch">
+                    <span className="inline-flex items-center px-3 rounded-l-xl text-sm" style={{ border: "1px solid rgba(15,36,71,0.15)", borderRight: "none", background: "rgba(15,36,71,0.04)", color: "#4A5468" }}>+1</span>
+                    <input
+                      type="tel"
+                      value={membershipForm.phone}
+                      onChange={e => { setMembershipForm(p => ({ ...p, phone: e.target.value })); if (phoneError) setPhoneError(""); }}
+                      className="w-full px-4 py-2.5 rounded-r-xl text-sm outline-none focus:ring-2 focus:ring-[#C8923D]"
+                      style={{ border: "1px solid rgba(15,36,71,0.15)", color: "#1A1F2E" }}
+                      placeholder="(626) 000-0000"
+                    />
+                  </div>
+                  {phoneError && (
+                    <p className="text-xs mt-1 font-medium" style={{ color: "#dc2626" }}>{phoneError}</p>
+                  )}
                 </div>
 
                 <div>

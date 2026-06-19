@@ -1,4 +1,5 @@
-const ADMIN_EMAIL = "info@npodia.org";
+// 收信地址：info@npodia.org 暂收不了信，管理员通知改投 DIA 的 Gmail（永久可靠）。发信 FROM 仍用已验证的 info@npodia.org。
+const ADMIN_EMAIL = "driveforwardimmigrantalliance@gmail.com";
 const FROM = "Drive Forward Immigrant Alliance <info@npodia.org>";
 const RESEND_API = "https://api.resend.com/emails";
 const LOGO = "https://www.npodia.org/logo.png";
