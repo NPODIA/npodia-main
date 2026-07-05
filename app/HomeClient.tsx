@@ -1046,11 +1046,11 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
               <div className="mb-4" style={{ color: "#7A5520" }}><IconEnvelope /></div>
               <h3 className="font-semibold mb-2" style={{ color: "#0F2447" }}>{t(lang, "邮件", "Email")}</h3>
               <a
-                href="mailto:info@npodia.org"
-                className="text-sm font-medium hover:underline"
+                href="mailto:driveforwardimmigrantalliance@gmail.com"
+                className="text-sm font-medium hover:underline break-all"
                 style={{ color: "#996B1D" }}
               >
-                info@npodia.org
+                driveforwardimmigrantalliance@gmail.com
               </a>
               <p className="text-xs mt-4 leading-relaxed" style={{ color: "#4A5468" }}>
                 {t(lang, "会员申请、合作咨询均可发邮件，我们将在 2 个工作日内回复。", "For membership applications and partnership inquiries. We respond within 2 business days.")}
@@ -1192,7 +1192,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
                 </div>
                 {formError && (
                   <p className="text-sm text-center py-2 rounded-lg" style={{ color: "#be123c", backgroundColor: "#fff1f2" }}>
-                    {t(lang, "发送失败，请直接发邮件至 info@npodia.org", "Submission failed. Please email us at info@npodia.org")}
+                    {t(lang, "发送失败，请直接发邮件至 driveforwardimmigrantalliance@gmail.com", "Submission failed. Please email us at driveforwardimmigrantalliance@gmail.com")}
                   </p>
                 )}
                 <button
@@ -1412,7 +1412,7 @@ export default function HomeClient({ news, videoCategories }: { news: NewsItem[]
 
                 {membershipError && (
                   <p className="text-sm text-center py-2 rounded-lg" style={{ color: "#be123c", backgroundColor: "#fff1f2" }}>
-                    {t(lang, "提交失败，请直接发邮件至 info@npodia.org", "Submission failed. Please email info@npodia.org")}
+                    {t(lang, "提交失败，请直接发邮件至 driveforwardimmigrantalliance@gmail.com", "Submission failed. Please email driveforwardimmigrantalliance@gmail.com")}
                   </p>
                 )}
 

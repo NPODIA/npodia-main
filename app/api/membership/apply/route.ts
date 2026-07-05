@@ -23,7 +23,7 @@ function suggestEmailDomain(email: string): string | null {
 }
 
 const RESEND_API = "https://api.resend.com/emails";
-// 收信地址：info@npodia.org 暂收不了信，管理员通知改投 DIA 的 Gmail（永久可靠）。发信 FROM 仍用已验证的 info@npodia.org。
+// 对外联系 + 收信统一 DIA Gmail（info@npodia.org 的 Google 账号已暂停）。info@ 只作 Resend 已验证发信 FROM 用。
 const ADMIN_EMAIL = "driveforwardimmigrantalliance@gmail.com";
 const FROM = "Drive Forward Immigrant Alliance <info@npodia.org>";
 const LOGO = "https://www.npodia.org/logo.png";
@@ -108,7 +108,7 @@ function confirmHtmlZh(firstName: string, tier: string, time: string) {
   <p style="margin:0;font-size:14px;line-height:1.6">
     <strong>DIA 团队</strong><br>
     移路前行联盟 · Drive Forward Immigrant Alliance<br>
-    <a href="mailto:info@npodia.org" style="color:#996B1D;text-decoration:none">info@npodia.org</a>
+    <a href="mailto:driveforwardimmigrantalliance@gmail.com" style="color:#996B1D;text-decoration:none;word-break:break-all">driveforwardimmigrantalliance@gmail.com</a>
   </p>
   <p style="color:#9ca3af;font-size:12px;margin:16px 0 0">提交时间 · ${time}</p>
 </div>
@@ -134,7 +134,7 @@ function confirmHtmlEn(firstName: string, tier: string, time: string) {
   <p style="margin:0;font-size:14px;line-height:1.6">
     <strong>DIA Team</strong><br>
     Drive Forward Immigrant Alliance · 移路前行联盟<br>
-    <a href="mailto:info@npodia.org" style="color:#996B1D;text-decoration:none">info@npodia.org</a>
+    <a href="mailto:driveforwardimmigrantalliance@gmail.com" style="color:#996B1D;text-decoration:none;word-break:break-all">driveforwardimmigrantalliance@gmail.com</a>
   </p>
   <p style="color:#9ca3af;font-size:12px;margin:16px 0 0">Submitted · ${time}</p>
 </div>
