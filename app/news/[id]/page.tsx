@@ -75,9 +75,27 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   const post = await fetchPost(id);
   if (!post) return { title: "资讯 · Drive Forward Immigrant Alliance" };
+  const title = `${post.title_zh} · 移路前行联盟`;
+  const description = (post.content_zh || "").slice(0, 140);
+  const images = post.cover_image_url ? [post.cover_image_url] : undefined;
   return {
-    title: `${post.title_zh} · 移路前行联盟`,
-    description: (post.content_zh || "").slice(0, 140),
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: `https://www.npodia.org/news/${post.id}`,
+      siteName: "NPODIA",
+      locale: "zh_CN",
+      type: "article",
+      images,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images,
+    },
   };
 }
 
